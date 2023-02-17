@@ -4,7 +4,31 @@ format: html
 editor: visual
 ---
 
-```{r}
+```{r cargar_librerias, echo = FALSE}
+if(!require(dplyr)){
+    install.packages("dplyr")
+}
+if(!require(hopkins)){
+    install.packages("hopkins")
+}
+if(!require(ggplot2)){
+    install.packages("ggplot2")
+}
+if(!require(ggrepel)){
+    install.packages("ggrepel")
+}
+if(!require(factoextra)){
+    install.packages("factoextra")
+}
+if(!require(cluster)){
+    install.packages("cluster")
+}
+if(!require(flexclust)){
+    install.packages("flexclust")
+}
+if(!require(FeatureImpCluster)){
+    install.packages("FeatureImpCluster")
+}
 library(dplyr)
 library(hopkins)
 library(ggplot2)
@@ -19,9 +43,9 @@ library(FeatureImpCluster)
 
 ## 1. Preprocesamiento
 
-### Descripción de las variables
+En el preprocesamiento de la data eliminamos todas las variables cualitativas de nuestro set de datos. Además casteamos todas aquellas variables que eran cuantitavias pero estaban guardadas en formato de texto. Por ultimo para las varaibles de "castMenAmount" y "CastWomanAmount" como estas varaibles eran cuantitavas, pero en formato de texto, generaron NA los cuales fueron remplazados por 0; ya que consediramos pertinente tomar en cuenta las peliculas que no contienen un genero de actores para nusetro análisis. \### Descripción de las variables
 
-```{r}
+```{r variables, echo = FALSE}
 movies <- read.csv("movies.csv")
 summary(movies)
 
@@ -35,7 +59,7 @@ numerics <- movies[,c("budget", "revenue", "runtime","popularity", "voteAvg", "v
 numerics_norm <- mutate_if(numerics, is.numeric, scale)
 ```
 
-### Determinar si vale la pena agrupar
+# Determinar si vale la pena agrupar
 
 ## Utilizando Hopkins
 
@@ -45,10 +69,162 @@ h <- hopkins(numerics_norm)
 h
 ```
 
-## Utilizando VAT
+El cofifiente de Hopkins fue de `{r round(h, 2)}`, al ser igual a 1 nos indica que el set datos tiene una estructura adecuada para la agrupación.\
+\## Utilizando VAT
 
 ```{r vat}
 
 distancia <- dist(numerics_norm)
-fviz_dist(distancia, show_labels = F)
+#fviz_dist(distancia, show_labels = F)
+```
+
+# Determinar el numero de clusters
+
+## Método WSS
+
+```{r metodo_wss}
+    #wss <- 0
+    #for (i in 1:10){
+    #    wss[i] <- sum(kmeans(numerics_norm, centers = i)$withinss)
+    #}
+    #plot(1:10, wss, type="b", xlab="cantidad de grupos", ylab="wss")
+
+    #fviz_nbclust(numerics_norm, kmeans, method="wss")
+```
+
+## Método de la silueta
+
+```{r silueta}
+
+    fviz_nbclust(numerics_norm, kmeans, method="silhouette")
+
+```
+
+## Clustering
+
+```{r kmeans}
+    km <- kmeans(numerics_norm, centers = 4)
+```
+
+### Resumen de kmedias
+
+```{r kmedias}
+    km
+    fviz_cluster(km, numerics_norm)
+    km$size
+```
+
+# Test de calidad
+
+```{r test de calidad}
+    m <- data.frame(withinss=km$withinss, size=km$size)
+    ggplot(m, aes(size,withinss))+ 
+        geom_point()+ 
+        geom_smooth(method="lm")+ 
+        labs(x="cardinalidad (size)",
+            y="magnitud (whithinss)")+ 
+        geom_text_repel(label=rownames(m))
+```
+
+## Calidad por el método de la silueta
+
+```{r}
+    silueta <- silhouette(km$cluster, distancia)
+    mean(silueta[,3])
+```
+
+```{r}
+    res <- kcca(numerics_norm, 4)
+    importance <- FeatureImpCluster(res, as.data.table(numerics_norm))
+    plot(importance)
+    barplot(res, bycluster=T)
+```
+
+
+# Utilizando Kmeans
+```{r con_4_grupos}
+    set.seed(123)
+    km <- kmeans(numerics_norm, centers = 4, iter.max = 100)
+    km
+    fviz_cluster(km, numerics_norm) 
+    km$size
+    m <- data.frame(withinss=km$withinss, size=km$size) 
+    ggplot(m, aes(size,withinss))+ 
+    geom_point()+ 
+    geom_smooth(method="lm")+ 
+    labs(x="cardinalidad (size)",
+        y="magnitud (whithinss)")+ 
+    geom_text_repel(label=rownames(m))
+```
+
+```{r}
+    set.seed(123)
+    res <- kcca(numerics_norm,4)
+    importance <- FeatureImpCluster(res, as.data.table(numerics_norm))
+    plot(importance)
+    barplot(res, bycluster=T)
+```
+
+# Utilizando Cluster Jerárquico
+
+
+```{r hcluster}
+    hc <- hclust(distancia, method ="complete")
+```
+
+### Resumen de kmedias
+
+```{r hcluster}
+    plot(hc)
+```
+
+# Test de calidad clustering jerarquico
+
+```{r test de calidad}
+    m <- data.frame(withinss=km$withinss, size=km$size)
+    ggplot(m, aes(size,withinss))+ 
+        geom_point()+ 
+        geom_smooth(method="lm")+ 
+        labs(x="cardinalidad (size)",
+            y="magnitud (whithinss)")+ 
+        geom_text_repel(label=rownames(m))
+```
+
+## Calidad por el método de la silueta
+
+```{r}
+    silueta <- silhouette(km$cluster, distancia)
+    mean(silueta[,3])
+```
+
+```{r}
+    res <- kcca(numerics_norm, 4)
+    importance <- FeatureImpCluster(res, as.data.table(numerics_norm))
+    plot(importance)
+    barplot(res, bycluster=T)
+```
+
+
+# Utilizando clustering jerarquico
+```{r con_4_grupos}
+    set.seed(123)
+    km <- hclust(numerics_norm, centers = 4, iter.max = 100)
+    km
+    fviz_cluster(km, numerics_norm) 
+    km$size
+    m <- data.frame(withinss=km$withinss, size=km$size) 
+    ggplot(m, aes(size,withinss))+ 
+    geom_point()+ 
+    geom_smooth(method="lm")+ 
+    labs(x="cardinalidad (size)",
+        y="magnitud (whithinss)")+ 
+    geom_text_repel(label=rownames(m))
+```
+
+```{r}
+    set.seed(123)
+    res <- kcca(numerics_norm,4)
+    importance <- FeatureImpCluster(res, as.data.table(numerics_norm))
+    plot(importance)
+    barplot(res, bycluster=T)
 ```

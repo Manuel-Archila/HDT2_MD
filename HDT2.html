@@ -124,7 +124,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: dplyr</code></pre>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'dplyr'</code></pre>
@@ -139,15 +141,27 @@ Attaching package: 'dplyr'</code></pre>
 
     intersect, setdiff, setequal, union</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hopkins)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: hopkins</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggrepel</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: factoextra</code></pre>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cluster)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flexclust)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: cluster</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: flexclust</code></pre>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: grid</code></pre>
 </div>
@@ -160,7 +174,9 @@ Attaching package: 'dplyr'</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: stats4</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FeatureImpCluster)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: FeatureImpCluster</code></pre>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: data.table</code></pre>
 </div>
@@ -178,11 +194,8 @@ Attaching package: 'data.table'</code></pre>
 <h1>Clustering - Movies</h1>
 <section id="preprocesamiento" class="level2">
 <h2 class="anchored" data-anchor-id="preprocesamiento">1. Preprocesamiento</h2>
-<section id="descripción-de-las-variables" class="level3">
-<h3 class="anchored" data-anchor-id="descripción-de-las-variables">Descripción de las variables</h3>
+<p>En el preprocesamiento de la data eliminamos todas las variables cualitativas de nuestro set de datos. Además casteamos todas aquellas variables que eran cuantitavias pero estaban guardadas en formato de texto. Por ultimo para las varaibles de “castMenAmount” y “CastWomanAmount” como estas varaibles eran cuantitavas, pero en formato de texto, generaron NA los cuales fueron remplazados por 0; ya que consediramos pertinente tomar en cuenta las peliculas que no contienen un genero de actores para nusetro análisis. ### Descripción de las variables</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>movies <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"movies.csv"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       id             budget             genres            homePage        
  Min.   :     5   Min.   :        0   Length:10000       Length:10000      
@@ -241,30 +254,772 @@ Attaching package: 'data.table'</code></pre>
                    
                    </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>movies<span class="sc">$</span>castMenAmount <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(movies<span class="sc">$</span>castMenAmount)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: NAs introduced by coercion</code></pre>
+<pre><code>Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>movies<span class="sc">$</span>castMenAmount <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(movies<span class="sc">$</span>castMenAmount), <span class="dv">0</span>, <span class="fu">as.numeric</span>(movies<span class="sc">$</span>castMenAmount))</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>movies<span class="sc">$</span>castWomenAmount <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(movies<span class="sc">$</span>castWomenAmount)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: NAs introduced by coercion</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>movies<span class="sc">$</span>castWomenAmount <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(movies<span class="sc">$</span>castWomenAmount), <span class="dv">0</span>, <span class="fu">as.numeric</span>(movies<span class="sc">$</span>castWomenAmount))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>numerics <span class="ot">&lt;-</span> movies[,<span class="fu">c</span>(<span class="st">"budget"</span>, <span class="st">"revenue"</span>, <span class="st">"runtime"</span>,<span class="st">"popularity"</span>, <span class="st">"voteAvg"</span>, <span class="st">"voteCount"</span>, <span class="st">"genresAmount"</span>, <span class="st">"productionCoAmount"</span>,  <span class="st">"productionCountriesAmount"</span>, <span class="st">"actorsAmount"</span>, <span class="st">"castWomenAmount"</span>, <span class="st">"castMenAmount"</span>)]</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>numerics_norm <span class="ot">&lt;-</span> <span class="fu">mutate_if</span>(numerics, is.numeric, scale)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="determinar-si-vale-la-pena-agrupar" class="level3">
-<h3 class="anchored" data-anchor-id="determinar-si-vale-la-pena-agrupar">Determinar si vale la pena agrupar</h3>
-<p>fviz_cluster(list(data = numerics_norm), cluster = kmen)</p>
+</section>
+<section id="determinar-si-vale-la-pena-agrupar" class="level1">
+<h1>Determinar si vale la pena agrupar</h1>
+<section id="utilizando-hopkins" class="level2">
+<h2 class="anchored" data-anchor-id="utilizando-hopkins">Utilizando Hopkins</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">hopkins</span>(numerics_norm)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>distancia <span class="ot">&lt;-</span> <span class="fu">dist</span>(numerics_norm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">hopkins</span>(numerics_norm)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>h</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>El cofifiente de Hopkins fue de <code>{r round(h, 2)}</code>, al ser igual a 1 nos indica que el set datos tiene una estructura adecuada para la agrupación.<br>
+## Utilizando VAT</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>distancia <span class="ot">&lt;-</span> <span class="fu">dist</span>(numerics_norm)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">#fviz_dist(distancia, show_labels = F)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+</section>
+<section id="determinar-el-numero-de-clusters" class="level1">
+<h1>Determinar el numero de clusters</h1>
+<section id="método-wss" class="level2">
+<h2 class="anchored" data-anchor-id="método-wss">Método WSS</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">#wss &lt;- 0</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#for (i in 1:10){</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    wss[i] &lt;- sum(kmeans(numerics_norm, centers = i)$withinss)</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#}</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#plot(1:10, wss, type="b", xlab="cantidad de grupos", ylab="wss")</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#fviz_nbclust(numerics_norm, kmeans, method="wss")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="método-de-la-silueta" class="level2">
+<h2 class="anchored" data-anchor-id="método-de-la-silueta">Método de la silueta</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fviz_nbclust</span>(numerics_norm, kmeans, <span class="at">method=</span><span class="st">"silhouette"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/silueta-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="clustering" class="level2">
+<h2 class="anchored" data-anchor-id="clustering">Clustering</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>    km <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(numerics_norm, <span class="at">centers =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="resumen-de-kmedias" class="level3">
+<h3 class="anchored" data-anchor-id="resumen-de-kmedias">Resumen de kmedias</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>    km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>K-means clustering with 4 clusters of sizes 596, 2365, 3773, 3266
+
+Cluster means:
+       budget     revenue    runtime  popularity    voteAvg   voteCount
+1  2.87759334  2.95704118  0.8054207  0.74870037  0.4867485  2.82467255
+2 -0.40651107 -0.33019481 -0.6003093 -0.06467300 -0.8395254 -0.42417482
+3 -0.09186791 -0.08732828  0.4774782 -0.03413420  0.5395457  0.02908794
+4 -0.12462625 -0.19963142 -0.2638777 -0.05036296 -0.1042040 -0.24191065
+  genresAmount productionCoAmount productionCountriesAmount actorsAmount
+1    0.5602010          0.2806700               -0.08277371 -0.056188513
+2   -0.7872864         -0.3763204                0.31850255  0.079297248
+3   -0.4108179          0.2945294               -0.07783123 -0.032908866
+4    0.9424582         -0.1189654               -0.12561793 -0.009150179
+  castWomenAmount castMenAmount
+1     -0.10379005    -0.1631444
+2      0.29335017     0.5119361
+3     -0.07969332    -0.1578133
+4     -0.10141806    -0.1586238
+
+Clustering vector:
+    [1] 2 4 1 1 1 1 3 3 1 3 1 1 3 4 3 3 1 3 3 1 3 3 3 3 3 3 3 3 3 3 1 4 3 3 3 4
+   [37] 3 3 3 4 1 3 3 1 3 3 1 4 4 1 3 3 4 1 4 3 3 3 3 3 3 3 3 4 4 1 1 1 1 3 3 1
+   [73] 3 3 4 4 3 3 3 3 3 3 3 4 3 3 4 1 1 3 1 3 1 4 3 3 4 3 4 4 3 3 3 3 1 4 3 3
+  [109] 3 3 3 3 4 3 1 1 4 4 3 3 3 3 3 3 1 3 3 3 4 3 3 3 4 4 3 1 3 3 3 3 4 4 3 4
+  [145] 1 3 3 1 3 3 3 3 4 1 4 1 1 3 3 1 3 1 3 1 3 3 3 3 1 3 1 3 3 3 4 1 3 4 4 3
+  [181] 3 4 3 1 3 3 3 3 3 3 1 1 3 3 3 3 4 3 3 3 3 3 1 4 3 3 3 3 3 4 3 1 1 1 3 3
+  [217] 3 1 1 3 3 3 3 1 3 4 4 3 4 3 1 3 3 4 4 3 3 4 3 3 4 3 4 3 3 3 3 3 3 1 3 1
+  [253] 3 4 3 3 3 3 3 3 3 4 3 4 4 4 4 1 3 3 4 3 3 3 3 1 4 3 1 1 1 1 3 3 1 3 3 3
+  [289] 3 4 3 3 1 3 3 3 3 1 3 3 3 1 3 3 3 3 3 1 3 3 3 1 1 1 1 1 3 1 1 3 3 3 3 1
+  [325] 1 4 4 3 3 3 3 3 3 2 3 3 3 3 3 3 4 1 3 3 1 3 3 3 1 3 4 3 3 3 1 3 3 3 3 3
+  [361] 3 3 4 1 3 3 3 1 1 1 1 1 1 3 1 3 3 3 3 3 3 1 1 3 4 3 3 3 3 3 3 3 3 3 3 1
+  [397] 3 1 3 3 1 1 4 3 4 3 3 3 3 4 4 1 3 3 3 1 3 4 4 3 3 1 3 3 2 3 4 3 3 3 3 3
+  [433] 3 3 3 2 1 1 1 1 1 3 3 4 4 3 3 3 4 3 3 3 3 3 4 4 4 3 4 3 3 3 3 3 3 3 3 3
+  [469] 1 1 4 3 3 3 1 1 3 4 3 1 4 3 3 1 3 3 3 4 3 3 3 3 3 4 4 3 4 4 1 3 3 3 3 3
+  [505] 4 3 4 1 4 3 3 3 4 4 4 1 3 3 3 1 1 1 1 1 3 4 3 3 3 3 3 3 3 4 3 3 3 3 3 4
+  [541] 3 3 4 3 3 3 4 3 3 3 3 3 1 3 3 3 3 3 3 1 3 3 3 3 3 4 1 3 1 3 4 3 3 4 2 4
+  [577] 3 3 3 3 3 4 4 4 1 3 2 4 4 3 3 3 1 3 3 3 3 1 3 4 3 3 4 3 3 4 3 1 3 3 4 3
+  [613] 3 3 1 4 4 4 3 2 3 3 3 3 3 3 3 4 3 3 1 1 3 3 3 4 3 3 4 3 3 3 3 3 2 3 1 4
+  [649] 3 3 3 3 3 4 4 3 3 3 2 4 3 3 1 4 3 1 3 4 3 3 4 4 3 3 3 3 3 3 4 4 3 4 3 2
+  [685] 2 2 3 3 3 2 3 3 3 1 3 1 3 3 1 1 3 1 3 3 3 4 3 3 3 3 3 3 4 3 4 1 1 3 3 4
+  [721] 3 4 3 3 1 1 1 1 1 3 3 4 3 4 4 3 3 3 1 1 3 3 3 4 3 4 1 3 3 3 3 4 1 4 4 2
+  [757] 4 1 3 3 3 4 1 4 3 4 2 3 3 3 3 2 3 3 1 3 4 3 4 4 3 4 1 3 3 2 1 1 3 3 3 1
+  [793] 3 4 4 3 4 3 3 4 4 4 3 4 4 3 4 1 4 4 3 3 4 4 3 3 3 3 3 4 4 3 3 4 3 3 3 1
+  [829] 3 3 4 4 4 3 3 3 3 3 4 4 4 4 4 4 3 3 3 3 2 2 3 4 4 3 4 3 3 1 4 4 4 1 1 1
+  [865] 3 3 1 3 3 3 3 3 4 3 4 3 3 3 3 4 4 2 2 3 3 1 3 3 1 3 1 3 3 3 4 3 3 2 2 3
+  [901] 3 4 3 3 4 4 3 3 3 3 3 4 3 3 4 4 4 3 3 3 3 4 4 3 4 3 3 3 3 3 1 4 3 4 4 3
+  [937] 3 3 2 3 3 3 4 4 4 3 3 3 3 3 4 4 2 3 3 3 3 3 2 4 3 3 3 3 3 3 4 3 3 4 3 3
+  [973] 3 4 3 3 4 3 3 3 2 3 3 3 4 3 3 2 3 2 2 2 2 3 4 3 3 3 3 4 3 4 3 4 3 4 4 3
+ [1009] 3 3 3 4 3 3 4 1 3 3 3 3 3 3 3 3 3 3 3 4 4 3 3 4 3 3 3 4 3 2 3 3 3 4 3 4
+ [1045] 4 3 4 1 4 3 3 3 3 3 4 3 4 3 4 3 3 4 4 1 3 3 2 3 3 4 2 3 1 1 3 2 2 4 1 3
+ [1081] 3 4 4 4 2 2 4 3 3 4 3 3 3 4 4 3 1 4 3 3 4 3 3 3 3 4 3 3 4 2 3 3 3 3 3 3
+ [1117] 3 3 3 2 4 3 2 3 4 2 4 3 3 3 3 3 2 4 3 4 3 4 4 3 3 4 4 3 2 2 3 4 4 1 4 4
+ [1153] 4 3 3 4 3 4 4 3 3 3 1 3 2 4 3 4 3 2 4 3 4 4 3 3 3 1 3 4 4 4 2 4 1 2 3 4
+ [1189] 4 3 2 3 3 4 2 2 2 3 4 3 3 3 3 4 3 3 3 4 4 4 3 1 4 3 3 4 3 4 4 4 4 2 3 4
+ [1225] 4 4 4 3 3 3 2 3 3 3 2 4 3 3 4 3 3 3 4 3 3 3 4 3 4 3 2 4 3 3 3 3 4 3 4 3
+ [1261] 4 3 3 3 3 4 4 4 3 4 3 3 3 2 2 2 4 2 3 3 3 3 4 4 3 3 3 3 1 3 1 3 3 1 3 2
+ [1297] 2 4 3 3 3 4 3 3 4 3 4 4 4 3 2 4 3 3 3 1 1 3 3 3 3 1 4 1 4 2 3 3 3 4 3 4
+ [1333] 2 2 4 3 4 4 3 3 2 3 4 4 3 4 3 4 4 4 4 3 1 3 3 4 4 4 2 2 4 4 1 3 2 2 3 3
+ [1369] 3 2 1 3 4 4 3 3 3 4 1 1 4 4 1 3 2 2 3 4 4 4 4 4 2 3 3 4 3 2 3 4 4 4 3 4
+ [1405] 4 3 4 3 4 3 4 3 4 4 3 4 3 3 3 4 4 3 4 4 3 3 3 4 2 4 4 2 3 3 3 4 4 4 4 3
+ [1441] 3 4 4 4 2 3 2 3 2 3 4 3 4 2 3 3 4 3 3 3 4 4 4 3 4 3 3 1 3 4 3 3 4 4 3 3
+ [1477] 3 4 4 3 3 4 4 3 4 3 4 3 3 4 4 3 4 3 3 3 3 3 2 4 3 3 4 4 2 4 4 4 3 3 4 2
+ [1513] 4 4 3 3 3 4 3 3 4 4 3 3 4 1 3 3 3 3 4 4 3 3 4 4 1 4 3 2 2 3 3 1 3 3 4 3
+ [1549] 3 4 3 4 3 4 3 3 3 4 4 1 4 4 3 2 3 3 4 4 3 3 3 4 3 2 3 3 3 4 4 4 4 3 2 3
+ [1585] 3 3 2 3 3 4 2 4 3 4 4 4 4 4 3 2 2 4 4 4 3 4 4 4 4 4 4 3 4 4 4 3 4 4 3 3
+ [1621] 3 4 3 3 3 4 3 4 2 4 4 4 3 4 3 4 4 4 3 4 2 3 4 4 4 2 3 2 2 2 2 4 4 1 3 1
+ [1657] 4 4 4 3 2 3 2 4 3 3 3 3 4 3 4 3 3 3 2 3 2 2 3 3 3 1 1 2 1 2 2 4 3 4 4 4
+ [1693] 4 4 3 1 4 4 4 3 4 2 2 4 3 4 4 3 3 4 2 4 3 3 2 3 3 4 4 3 3 4 4 3 4 3 2 2
+ [1729] 4 3 4 4 4 4 3 3 3 2 3 2 4 4 2 3 4 4 4 2 1 4 2 4 4 4 4 4 2 2 2 1 4 2 4 4
+ [1765] 4 1 3 3 4 3 4 3 2 3 4 3 4 4 4 2 2 3 2 4 4 3 4 2 3 3 2 3 2 4 3 2 3 4 4 3
+ [1801] 3 3 3 4 3 4 2 2 4 1 1 1 4 3 4 4 4 2 3 3 2 4 2 3 2 4 4 2 3 4 2 4 3 1 1 1
+ [1837] 1 1 1 4 4 3 4 3 4 3 4 4 4 4 4 3 3 4 3 4 4 3 3 4 2 4 2 2 2 2 2 2 4 4 3 3
+ [1873] 4 3 3 4 4 2 3 4 3 4 4 4 3 2 4 3 2 4 4 2 3 3 4 4 4 3 4 3 3 2 3 2 4 4 3 4
+ [1909] 2 4 3 3 2 4 3 3 3 2 2 3 3 2 4 3 3 4 2 3 3 4 4 3 4 3 1 1 3 4 3 3 2 4 3 4
+ [1945] 4 4 1 3 3 3 1 3 4 3 1 4 2 2 2 2 2 4 4 3 3 3 4 4 3 4 3 4 3 3 3 3 4 4 3 4
+ [1981] 4 4 3 3 3 3 2 3 4 4 4 4 3 4 3 4 3 2 3 4 3 3 1 3 2 3 2 4 4 1 4 2 3 3 4 4
+ [2017] 3 4 3 4 2 4 3 4 4 2 2 3 3 4 3 4 3 4 3 4 3 4 3 3 4 1 3 4 4 3 4 3 3 3 3 3
+ [2053] 4 3 3 4 4 2 3 4 3 3 2 2 4 3 4 4 4 2 4 2 2 1 4 3 3 3 4 4 4 4 4 4 4 3 4 4
+ [2089] 4 4 3 3 4 3 3 4 4 4 3 3 4 4 4 4 4 3 4 4 4 4 2 2 4 4 3 3 4 3 3 4 4 4 3 3
+ [2125] 3 4 3 4 3 3 3 3 4 2 3 4 2 4 3 4 3 3 2 4 3 3 4 4 2 3 2 4 3 4 4 4 4 3 2 3
+ [2161] 4 2 3 4 3 3 3 2 4 3 4 2 4 3 2 2 3 3 4 3 3 3 3 3 4 3 3 3 2 2 3 4 3 4 4 3
+ [2197] 3 2 4 4 4 4 3 4 4 3 3 4 4 4 3 2 3 3 4 4 3 3 3 2 3 3 3 2 3 3 2 4 3 3 1 3
+ [2233] 3 4 4 3 3 4 4 3 3 3 2 4 2 4 2 2 3 4 4 4 4 4 4 3 4 2 3 2 3 4 4 3 4 3 4 4
+ [2269] 4 4 3 2 3 4 2 2 4 4 3 4 2 4 3 3 3 4 4 3 4 3 2 3 3 3 2 4 4 3 4 3 3 3 2 2
+ [2305] 4 3 4 4 3 3 4 4 3 3 3 4 3 3 3 4 3 4 4 1 3 4 4 2 1 4 3 4 4 3 4 3 3 4 4 4
+ [2341] 3 4 3 4 4 3 3 4 3 2 4 4 4 4 4 3 3 4 3 4 4 4 3 4 3 3 1 4 3 3 3 4 3 3 4 2
+ [2377] 4 4 4 3 4 2 4 3 4 4 4 3 4 3 3 3 3 4 3 3 3 2 3 3 4 2 3 4 3 3 3 4 4 3 4 4
+ [2413] 2 4 4 2 2 3 3 2 3 4 4 3 2 3 3 3 3 4 4 3 1 4 3 2 3 4 4 4 3 4 2 4 3 4 4 4
+ [2449] 4 3 3 4 4 3 2 2 4 3 4 2 3 2 4 3 3 3 3 3 3 1 3 3 3 3 4 4 4 3 4 4 4 3 3 4
+ [2485] 2 4 4 4 2 4 4 4 4 4 3 3 2 3 2 4 3 3 4 1 3 3 4 4 1 1 4 4 3 3 3 2 3 4 2 2
+ [2521] 3 4 3 3 4 2 4 4 4 4 4 3 4 3 3 2 2 4 4 4 3 2 2 2 2 4 3 4 2 3 2 3 3 2 4 4
+ [2557] 4 4 4 4 4 3 4 3 4 3 3 3 2 4 3 4 4 3 4 1 4 3 4 2 2 4 4 4 4 4 4 2 4 3 3 2
+ [2593] 4 1 4 2 4 4 2 3 3 4 4 2 2 3 4 4 4 4 4 4 2 2 4 4 3 4 4 3 2 3 4 4 2 3 4 2
+ [2629] 4 4 2 4 4 4 3 2 3 4 4 1 3 3 4 2 4 3 2 1 2 2 4 4 3 2 2 4 2 4 2 4 3 4 4 3
+ [2665] 4 4 4 2 2 4 3 3 3 4 2 2 4 4 4 4 4 4 4 2 4 4 3 4 3 4 2 4 4 3 4 2 4 2 2 2
+ [2701] 3 4 4 4 4 3 4 4 1 2 3 4 2 4 2 2 4 4 4 3 3 2 3 2 2 3 4 4 2 4 4 4 4 4 2 2
+ [2737] 2 4 2 3 4 4 4 2 4 4 4 2 2 4 3 4 3 4 3 2 4 4 4 3 4 2 4 2 1 1 4 2 4 2 2 4
+ [2773] 4 3 4 4 4 2 4 4 4 3 3 3 3 3 4 3 3 4 3 4 3 4 2 3 4 2 4 3 4 4 3 4 4 4 2 3
+ [2809] 4 4 3 2 3 2 3 2 3 4 2 4 2 3 4 4 4 2 4 4 3 3 3 2 2 4 3 4 2 4 3 3 4 2 4 3
+ [2845] 3 4 4 2 3 1 4 4 2 4 4 2 2 4 4 3 4 4 4 3 3 4 2 4 4 4 4 2 2 4 4 3 4 4 2 3
+ [2881] 3 4 4 3 4 3 2 4 2 4 3 4 3 2 4 4 4 4 4 2 3 3 4 2 3 4 3 4 4 3 4 4 4 3 4 4
+ [2917] 4 2 4 3 3 1 4 2 2 2 4 4 3 4 4 4 4 2 4 4 4 4 4 2 4 3 4 3 4 4 3 4 3 2 4 3
+ [2953] 3 4 4 4 3 2 4 4 4 4 2 3 4 2 3 4 4 2 2 4 3 4 3 2 4 3 4 4 4 2 4 2 4 4 4 2
+ [2989] 3 4 4 2 3 3 2 4 3 2 2 4 4 2 4 4 2 2 2 4 2 2 4 3 4 2 3 4 4 3 3 4 4 4 3 3
+ [3025] 3 2 4 2 2 4 4 2 4 4 4 4 1 3 4 4 4 2 2 4 2 4 3 3 4 2 2 4 4 4 4 4 4 4 4 4
+ [3061] 2 3 4 4 2 3 2 2 4 3 4 2 2 4 4 2 4 3 3 4 1 2 3 2 3 2 2 4 3 3 4 3 4 4 2 2
+ [3097] 4 3 4 2 3 2 1 2 4 2 2 4 4 4 2 2 3 4 4 2 2 4 4 2 1 3 4 4 4 3 3 4 1 3 2 4
+ [3133] 2 3 4 2 3 3 2 4 4 3 3 3 3 4 3 3 3 1 1 4 2 4 4 2 4 4 3 3 2 4 4 3 2 2 2 3
+ [3169] 4 2 3 2 3 4 2 3 4 2 2 3 4 3 4 4 4 3 2 2 4 1 2 4 2 3 2 2 3 4 4 3 4 2 3 2
+ [3205] 3 2 4 4 4 3 1 2 4 2 3 2 4 4 3 3 4 2 3 3 2 2 2 3 4 4 1 4 3 4 2 2 3 4 3 1
+ [3241] 4 3 3 4 3 2 2 1 4 4 2 2 2 4 3 4 4 3 3 3 4 3 3 4 2 3 3 4 3 4 4 2 4 3 2 4
+ [3277] 3 3 4 4 3 4 4 3 2 4 4 3 3 3 3 4 2 3 2 4 2 3 4 4 3 4 4 4 2 4 4 4 4 4 4 4
+ [3313] 3 4 4 2 4 4 4 3 4 3 4 4 4 4 3 4 4 1 3 3 4 3 4 4 3 4 3 4 2 3 2 3 4 3 4 4
+ [3349] 4 4 4 2 2 3 4 3 3 4 3 4 4 4 4 3 4 4 3 2 3 4 4 2 4 4 2 3 2 2 2 2 2 4 1 4
+ [3385] 4 3 2 4 3 3 4 2 2 2 2 4 3 1 3 2 2 2 4 2 4 2 4 2 4 2 2 3 2 3 4 3 3 4 4 4
+ [3421] 3 4 2 2 2 2 2 2 4 4 4 4 3 3 3 2 2 4 4 4 3 2 2 2 4 4 2 3 4 4 4 4 4 2 3 4
+ [3457] 3 2 2 2 3 4 2 2 2 2 2 2 4 3 4 4 4 3 3 4 3 4 4 2 2 3 4 2 2 3 3 3 3 3 3 4
+ [3493] 3 2 2 2 4 4 3 2 4 3 4 4 3 3 4 3 1 4 3 1 2 2 2 2 4 1 1 4 3 4 4 2 3 3 4 2
+ [3529] 4 2 2 2 3 2 4 4 2 4 4 4 3 4 4 2 2 4 2 4 4 2 2 3 3 3 2 4 4 2 4 3 4 2 2 2
+ [3565] 4 2 3 3 2 3 3 3 4 4 2 4 4 3 2 3 3 4 3 4 4 2 3 3 2 3 4 4 2 3 4 3 4 3 4 2
+ [3601] 4 4 4 3 4 4 4 4 3 3 3 3 4 2 1 4 3 3 4 4 2 4 4 3 3 3 4 3 2 3 4 4 3 3 3 2
+ [3637] 2 2 3 4 3 3 4 2 3 4 4 4 4 4 4 4 3 4 4 2 4 3 4 2 1 4 2 2 4 3 3 4 4 2 3 4
+ [3673] 3 4 3 4 4 4 4 4 4 4 2 3 4 2 2 2 3 3 4 2 3 4 4 1 3 1 3 3 1 4 4 4 2 3 4 2
+ [3709] 1 4 2 3 3 4 1 3 3 1 2 4 3 3 3 3 4 4 4 3 4 2 4 3 4 4 1 1 4 3 3 4 2 3 3 1
+ [3745] 4 1 4 2 4 4 4 3 4 4 3 2 1 4 4 4 4 2 4 3 3 3 3 4 2 4 4 1 2 3 3 3 3 3 4 3
+ [3781] 3 4 4 4 1 2 4 3 1 4 4 1 3 4 3 4 3 4 3 4 4 4 4 4 4 4 4 4 4 4 2 4 3 3 2 4
+ [3817] 4 3 4 2 1 4 4 4 2 4 3 2 4 4 4 3 3 4 3 4 3 2 4 4 4 2 2 4 4 2 4 4 4 3 3 2
+ [3853] 4 1 3 1 4 3 4 4 3 4 4 4 2 3 2 2 3 3 3 4 1 4 4 3 3 3 3 4 4 2 3 4 4 3 3 2
+ [3889] 3 2 2 3 2 4 2 4 3 2 1 2 4 3 4 3 4 2 4 2 4 3 3 4 4 3 4 3 4 4 4 4 3 3 3 1
+ [3925] 2 4 4 4 3 4 3 2 4 3 4 3 4 4 4 4 4 4 4 4 4 4 3 1 1 3 3 1 4 1 2 3 4 3 3 4
+ [3961] 4 4 2 1 3 3 4 3 3 2 2 2 4 3 2 2 3 4 3 4 1 2 2 4 4 3 3 2 4 4 4 3 4 3 4 3
+ [3997] 4 2 4 4 2 4 2 4 4 3 1 1 1 3 3 3 4 3 2 3 2 3 2 4 4 3 2 3 4 2 3 4 2 1 4 3
+ [4033] 3 4 1 1 1 3 1 4 3 3 1 3 3 1 3 1 4 4 4 1 1 4 4 3 1 4 4 4 2 3 4 3 4 4 2 4
+ [4069] 4 3 3 3 4 4 4 4 3 4 4 4 4 2 3 4 4 3 3 1 1 3 2 2 3 3 2 4 4 3 3 3 4 4 4 4
+ [4105] 2 4 2 2 4 1 3 2 3 4 3 4 3 3 3 3 3 4 3 3 3 2 3 4 3 2 2 2 4 2 1 2 2 4 4 4
+ [4141] 1 3 3 4 3 4 3 2 4 4 4 3 4 3 4 4 4 3 2 4 3 3 3 4 3 3 4 1 4 3 4 3 3 2 2 4
+ [4177] 4 2 1 1 1 3 3 4 3 2 4 4 4 4 4 1 4 2 3 3 2 4 3 4 2 4 3 3 2 1 1 2 2 2 4 3
+ [4213] 3 4 4 4 4 2 3 2 3 2 4 2 4 3 4 2 2 3 4 3 3 3 4 2 2 4 3 4 3 3 3 3 2 3 4 3
+ [4249] 3 4 4 2 4 2 4 1 3 2 3 3 4 1 4 1 1 4 3 3 3 4 4 3 3 3 4 4 3 3 3 4 4 2 2 2
+ [4285] 3 4 3 4 4 3 1 2 3 1 3 1 1 3 3 4 3 3 3 2 3 3 4 3 3 2 4 2 2 2 2 4 2 1 3 4
+ [4321] 4 3 2 4 2 4 2 4 3 4 2 4 3 2 4 4 4 1 1 3 1 1 4 1 3 3 1 3 4 3 3 4 4 4 2 4
+ [4357] 2 4 2 1 2 4 3 2 2 2 4 2 3 3 2 3 2 3 1 4 3 4 3 2 2 2 4 2 4 3 4 2 3 2 1 1
+ [4393] 4 3 3 4 4 3 4 2 4 4 1 1 3 2 4 4 3 2 2 4 3 4 4 4 4 4 4 2 4 3 2 4 3 2 4 4
+ [4429] 3 3 3 3 3 3 3 3 3 3 2 4 4 2 4 1 2 4 4 3 1 4 4 4 3 3 2 3 2 3 3 4 1 1 3 3
+ [4465] 3 3 1 1 4 2 2 1 3 4 2 3 4 2 4 4 4 1 3 3 3 3 4 3 1 4 3 2 4 3 2 2 4 3 2 4
+ [4501] 3 1 3 1 4 3 2 3 2 4 4 3 3 3 2 4 2 2 2 4 3 4 4 2 4 4 4 4 2 2 4 4 4 3 4 3
+ [4537] 3 2 1 2 4 4 4 4 4 2 4 2 1 1 4 4 4 4 3 2 4 4 4 4 2 2 4 4 4 2 3 3 3 2 4 2
+ [4573] 1 4 3 2 1 1 1 4 1 1 1 4 2 1 4 4 4 4 3 1 3 3 4 3 4 2 4 2 3 4 4 2 2 4 3 2
+ [4609] 2 2 3 3 3 4 4 2 3 2 2 3 4 3 2 3 2 2 4 4 3 2 3 1 3 3 3 1 3 3 2 2 3 4 2 2
+ [4645] 2 3 3 1 4 3 3 4 2 4 4 3 4 3 3 4 3 2 4 3 2 1 2 2 4 3 3 2 2 1 3 2 3 4 3 4
+ [4681] 2 2 2 4 4 2 3 2 3 3 3 4 3 1 3 3 3 2 2 4 3 4 2 3 1 3 2 2 2 3 1 2 3 2 4 1
+ [4717] 4 2 2 4 3 1 4 4 2 4 4 1 4 1 1 4 4 2 3 3 2 3 4 4 2 1 2 2 3 1 3 3 2 2 3 3
+ [4753] 2 3 3 3 3 3 3 3 3 3 3 1 3 1 4 3 2 3 3 2 3 4 3 3 3 2 3 3 2 3 3 2 3 2 2 3
+ [4789] 3 2 2 3 4 2 2 3 4 3 2 2 2 4 2 4 4 3 4 4 3 4 3 3 4 3 2 4 1 2 2 4 1 3 2 2
+ [4825] 3 1 3 4 2 4 2 4 2 3 4 1 2 4 2 2 4 1 4 4 4 3 4 4 1 4 3 4 4 4 3 1 4 2 4 2
+ [4861] 3 2 2 1 2 4 2 4 3 1 3 4 4 1 4 3 4 3 4 3 1 4 3 3 2 2 2 3 4 3 4 1 1 2 2 2
+ [4897] 4 3 3 4 4 3 3 3 4 3 2 2 3 4 3 2 2 2 1 4 2 2 3 3 3 4 3 3 1 2 4 3 3 1 1 4
+ [4933] 3 4 2 4 4 3 2 2 4 3 1 2 2 2 1 1 2 3 3 4 2 1 4 4 4 2 2 4 4 2 2 4 2 4 3 4
+ [4969] 2 4 4 3 2 3 4 3 2 3 2 4 2 1 3 4 3 4 3 2 3 4 4 1 1 4 3 4 3 3 2 3 3 3 3 3
+ [5005] 3 2 4 4 2 4 3 4 3 2 4 2 3 3 3 4 3 3 2 3 2 4 2 1 1 4 4 4 4 2 2 2 3 3 4 3
+ [5041] 3 4 4 3 1 2 3 2 3 2 2 1 3 2 4 2 4 3 2 2 4 3 2 3 2 2 4 3 3 3 2 4 2 1 1 1
+ [5077] 3 2 3 2 3 2 4 3 4 4 4 1 3 3 2 4 2 2 2 3 4 4 4 4 4 3 4 2 4 4 4 1 2 4 3 3
+ [5113] 2 3 2 4 4 3 2 2 2 4 4 4 2 3 1 1 4 4 4 2 3 3 3 4 4 4 3 3 2 3 4 2 3 2 1 4
+ [5149] 1 1 3 3 2 4 3 4 2 3 4 3 3 3 2 4 3 2 2 3 2 2 4 3 2 3 4 1 4 2 4 1 3 3 4 2
+ [5185] 3 3 3 2 3 2 2 2 3 3 2 3 3 3 2 3 2 3 4 4 2 2 3 3 3 3 3 4 4 4 4 1 2 2 3 3
+ [5221] 3 2 2 3 4 3 2 3 3 2 4 4 4 4 3 4 4 2 4 4 3 3 2 2 3 3 2 4 3 3 3 4 4 2 3 4
+ [5257] 1 3 3 1 3 2 4 2 4 4 2 3 3 4 1 3 1 4 3 1 3 2 4 1 3 2 2 2 2 2 4 3 2 3 2 2
+ [5293] 2 2 3 1 4 3 4 2 4 1 3 4 3 4 3 3 4 4 2 4 4 2 3 2 4 2 2 2 3 4 2 3 2 2 3 4
+ [5329] 2 4 1 3 2 4 2 3 2 2 2 2 2 2 4 4 2 4 2 3 2 4 4 2 3 2 3 3 4 4 3 3 1 4 2 4
+ [5365] 3 4 2 2 4 4 2 3 3 3 2 2 2 2 3 3 3 2 4 4 3 2 2 4 3 3 3 3 3 4 2 4 4 3 1 1
+ [5401] 4 3 3 3 4 4 3 4 3 4 4 4 4 4 2 4 4 4 4 2 4 3 3 2 3 4 2 4 3 2 4 3 4 4 2 4
+ [5437] 3 3 3 3 4 4 4 2 3 3 2 3 4 4 1 3 3 2 2 4 2 1 4 4 2 4 4 2 4 4 3 3 4 2 4 3
+ [5473] 4 4 3 3 3 2 4 2 4 3 4 3 4 3 3 4 2 4 2 3 4 4 3 3 4 3 1 3 3 2 2 2 4 4 2 1
+ [5509] 3 2 4 2 3 2 4 3 3 3 2 2 4 3 3 2 3 4 4 2 3 3 4 4 3 4 2 3 4 2 3 2 3 2 3 4
+ [5545] 2 4 2 1 3 2 2 3 4 3 3 3 3 2 2 4 2 3 3 2 3 2 2 3 2 3 3 2 4 4 4 2 4 4 4 4
+ [5581] 3 3 3 1 2 4 4 3 2 2 4 4 3 3 2 2 3 4 4 4 4 3 3 4 3 1 4 2 2 4 2 2 2 1 3 1
+ [5617] 3 3 2 3 2 4 4 3 2 1 1 4 2 3 2 3 3 3 3 4 3 1 1 2 4 4 1 2 4 4 2 4 3 3 3 3
+ [5653] 3 3 3 2 3 3 4 2 4 4 3 3 3 1 3 2 3 3 4 4 2 3 1 2 4 3 4 4 1 4 3 1 4 2 3 4
+ [5689] 4 3 4 3 3 3 4 4 2 4 4 2 1 1 2 4 4 3 3 4 3 3 3 3 4 2 3 2 3 4 1 3 3 2 2 2
+ [5725] 3 3 3 3 4 1 1 4 1 2 4 2 2 4 2 3 4 3 3 4 2 2 2 2 4 3 1 1 3 4 2 4 4 1 3 4
+ [5761] 2 2 4 4 2 2 3 1 3 1 1 3 3 4 2 2 4 3 3 2 4 1 4 3 3 4 3 3 3 2 2 2 3 4 1 4
+ [5797] 1 1 1 4 3 2 3 2 4 2 3 4 2 4 3 3 3 3 2 3 1 4 2 2 2 4 4 4 2 4 2 4 4 2 2 2
+ [5833] 4 4 2 4 4 4 1 4 3 4 2 4 2 4 3 3 2 2 2 3 3 4 4 4 3 2 1 2 3 2 4 4 4 1 4 2
+ [5869] 4 3 3 2 3 4 2 3 1 2 3 3 3 4 2 3 2 1 2 2 3 1 3 3 3 3 3 4 1 4 2 3 4 4 3 3
+ [5905] 3 4 2 2 2 4 1 3 4 4 3 2 3 3 3 4 2 4 4 3 2 4 4 2 4 4 4 3 2 2 4 4 3 1 1 1
+ [5941] 3 4 4 2 4 4 4 3 4 2 2 4 1 1 1 2 2 4 2 3 4 4 3 4 4 4 4 3 3 4 4 3 3 2 2 3
+ [5977] 4 3 3 4 1 2 2 4 2 2 4 3 4 3 4 2 2 4 2 3 4 2 4 4 4 3 4 3 4 3 3 3 2 2 4 3
+ [6013] 3 2 3 2 3 2 4 3 3 3 4 2 3 2 1 3 3 2 3 3 4 2 3 4 4 4 3 3 2 4 1 2 4 2 3 2
+ [6049] 4 2 2 3 4 2 3 3 1 4 2 3 3 3 3 3 3 4 3 3 1 3 1 2 4 3 1 4 4 2 3 4 3 3 3 3
+ [6085] 2 3 3 4 2 3 4 3 3 3 4 3 4 3 2 1 3 4 4 4 4 4 2 4 1 3 3 3 4 4 4 4 3 2 3 2
+ [6121] 4 4 3 2 3 2 2 2 4 1 2 3 1 4 1 4 1 1 1 4 3 2 4 4 2 3 2 4 2 3 4 2 3 2 2 4
+ [6157] 3 4 3 3 4 1 3 3 2 3 4 2 4 2 3 2 1 3 1 4 3 2 2 2 1 1 3 3 4 3 4 3 3 3 4 3
+ [6193] 4 4 2 4 4 3 3 4 1 4 2 2 4 3 1 4 4 4 4 4 2 4 4 3 3 2 3 4 4 3 2 4 3 2 4 4
+ [6229] 4 4 3 3 3 4 3 4 2 3 2 2 3 3 2 2 4 2 3 4 3 3 4 3 1 2 1 1 1 3 2 2 2 2 4 2
+ [6265] 2 1 4 4 2 1 3 1 1 1 3 3 4 4 2 3 3 4 3 3 3 1 4 3 1 4 3 4 3 3 2 4 1 2 3 4
+ [6301] 3 4 2 4 3 2 1 4 1 3 3 3 4 3 3 3 3 2 4 3 3 4 4 2 4 2 2 2 3 3 2 3 4 3 3 4
+ [6337] 3 3 1 4 4 2 3 3 3 4 4 3 4 3 4 4 2 3 1 3 3 2 4 2 2 3 2 3 3 4 2 4 2 3 3 2
+ [6373] 2 4 3 1 3 3 2 1 3 4 4 2 4 4 2 2 4 4 3 4 2 3 2 4 3 3 4 4 3 3 4 2 2 2 2 3
+ [6409] 2 4 1 2 3 3 2 3 4 4 4 3 3 3 4 2 4 4 3 2 1 3 3 4 3 3 2 4 4 2 4 2 3 2 3 3
+ [6445] 3 2 1 3 2 1 4 2 2 4 2 3 2 3 2 4 4 2 3 4 4 2 4 3 3 1 2 4 4 2 2 2 4 2 4 2
+ [6481] 2 2 3 2 3 2 3 2 4 3 3 3 3 4 3 2 2 2 4 4 2 2 1 3 2 3 4 3 4 4 2 4 4 4 2 3
+ [6517] 1 2 3 4 3 4 4 2 4 4 4 4 4 1 4 2 4 2 3 3 2 2 2 4 4 4 2 3 2 4 3 4 1 2 2 3
+ [6553] 3 2 4 4 2 2 3 3 4 4 4 3 3 4 2 4 2 3 2 2 2 4 3 2 3 4 3 2 4 3 2 4 4 3 4 4
+ [6589] 2 3 4 1 4 4 3 3 2 3 2 3 2 3 3 2 3 4 2 3 3 4 4 3 4 2 3 4 4 3 2 1 3 4 4 2
+ [6625] 4 4 3 3 3 2 4 1 4 3 4 2 4 3 3 3 3 4 2 4 2 3 3 3 3 3 3 2 4 4 4 3 3 3 4 3
+ [6661] 2 3 3 3 3 3 4 4 2 2 3 4 4 3 4 4 4 4 4 2 3 3 3 4 2 4 3 1 3 2 2 3 4 2 4 3
+ [6697] 3 1 4 2 3 3 2 4 3 4 3 2 4 4 4 3 4 4 2 4 4 2 3 3 3 3 4 2 3 4 2 2 1 4 2 4
+ [6733] 2 1 3 2 4 3 3 2 4 2 4 4 1 3 2 4 2 4 2 4 4 2 3 3 4 4 2 3 2 2 4 2 4 2 2 4
+ [6769] 2 2 4 3 4 2 3 3 4 4 4 4 3 3 2 4 2 4 4 3 2 3 2 4 3 3 3 3 4 1 3 4 2 4 2 3
+ [6805] 2 2 2 3 3 3 4 2 3 2 3 4 3 2 3 3 3 4 4 4 4 3 4 2 4 3 3 3 4 4 3 3 3 2 3 2
+ [6841] 3 3 3 3 3 2 4 4 3 3 4 4 4 3 3 3 2 4 2 2 2 3 3 1 2 3 1 3 3 2 4 4 3 4 2 3
+ [6877] 4 4 4 3 3 3 1 1 3 3 3 3 3 2 2 3 3 3 4 1 4 4 3 2 4 3 3 1 4 3 3 2 3 3 4 3
+ [6913] 2 4 4 3 4 4 2 3 4 4 2 4 3 2 2 4 3 4 3 3 2 3 2 2 2 3 3 1 2 4 3 2 3 3 3 2
+ [6949] 2 1 3 4 2 4 3 3 4 3 4 2 2 4 4 3 4 4 3 3 3 4 4 3 3 3 3 3 4 2 4 3 2 4 4 4
+ [6985] 2 2 2 4 2 3 4 4 4 4 4 4 2 4 4 3 4 4 3 2 2 3 2 2 4 4 3 2 3 3 2 3 4 3 4 2
+ [7021] 4 2 4 4 3 4 4 2 3 3 2 4 4 2 3 2 4 4 4 2 2 3 2 4 4 2 4 3 2 2 3 3 4 3 3 4
+ [7057] 4 2 2 3 2 2 2 2 4 3 3 2 2 4 4 3 4 4 4 3 3 3 2 4 3 3 2 2 3 3 2 3 2 3 4 3
+ [7093] 3 2 2 4 3 3 3 2 1 3 4 2 4 2 3 2 2 1 2 2 3 2 2 4 3 2 3 2 3 3 4 2 2 4 3 2
+ [7129] 2 3 4 1 4 1 1 2 4 2 4 3 2 2 3 4 4 2 4 4 4 2 3 3 3 4 2 3 4 3 2 4 3 3 3 3
+ [7165] 4 1 3 1 3 3 3 4 3 4 3 3 3 4 2 1 2 4 4 4 4 2 4 2 2 3 4 3 2 3 4 4 3 3 4 2
+ [7201] 4 3 2 2 4 4 1 4 3 3 2 3 3 4 4 4 4 3 3 3 3 3 2 3 3 3 3 3 3 3 4 4 2 3 3 3
+ [7237] 4 2 2 1 2 4 3 3 3 2 4 3 4 2 4 4 2 3 3 2 4 4 4 4 3 4 4 2 4 2 2 3 2 3 2 3
+ [7273] 4 3 3 2 2 2 4 4 2 4 3 3 4 4 2 4 4 4 3 3 3 2 2 2 3 4 3 3 3 2 2 3 3 3 4 2
+ [7309] 3 4 2 4 2 3 4 3 4 2 1 3 3 3 4 3 3 3 3 4 2 2 4 2 2 4 3 3 3 2 3 2 4 2 2 4
+ [7345] 4 4 1 3 3 2 3 2 1 3 4 4 4 3 3 4 2 4 4 2 2 3 3 2 4 2 3 4 4 4 2 4 3 3 3 2
+ [7381] 3 3 3 2 4 4 4 4 3 2 4 2 3 2 4 3 2 4 2 3 2 2 3 3 2 3 3 2 3 3 3 4 2 2 4 2
+ [7417] 2 4 4 3 3 4 2 4 4 3 4 4 2 2 3 3 2 1 1 3 2 2 1 2 2 3 1 4 4 2 2 2 2 3 4 2
+ [7453] 2 2 2 4 3 2 3 3 3 3 3 3 2 2 4 4 2 2 3 3 3 1 3 3 4 4 4 3 2 2 4 4 3 4 1 3
+ [7489] 3 2 2 2 3 3 4 4 3 2 2 2 2 2 3 2 4 4 1 3 4 4 4 2 4 4 3 4 3 3 2 1 2 3 4 3
+ [7525] 2 3 4 4 4 3 2 3 1 4 4 3 4 3 3 3 4 3 4 4 2 2 2 2 2 2 2 4 2 4 4 3 4 3 2 4
+ [7561] 4 2 3 4 3 3 2 3 2 3 4 4 4 4 4 4 2 3 1 3 4 2 3 4 4 2 3 3 3 3 3 3 3 3 4 4
+ [7597] 2 2 2 4 2 2 3 3 3 2 3 3 4 2 3 3 3 2 1 3 1 4 4 3 4 4 4 4 2 4 4 4 2 4 2 2
+ [7633] 4 4 2 4 2 4 4 3 4 2 3 4 3 4 3 4 3 4 2 4 4 2 4 1 2 3 2 4 4 3 2 2 3 4 4 2
+ [7669] 1 3 3 4 3 3 4 4 2 3 2 2 3 3 4 3 4 3 4 3 3 4 2 4 3 4 4 3 4 3 2 3 4 4 2 3
+ [7705] 3 3 4 4 2 2 3 2 4 4 4 4 4 4 2 2 3 2 4 2 2 2 3 3 3 4 4 3 3 4 2 2 2 4 4 3
+ [7741] 3 2 4 3 2 2 4 2 3 4 4 3 1 4 4 4 4 3 3 4 4 4 3 4 1 4 3 4 2 4 3 4 4 4 4 3
+ [7777] 2 3 3 3 4 3 3 2 3 3 2 4 2 2 1 3 3 2 4 4 2 2 2 3 3 4 2 2 2 2 4 3 3 2 2 3
+ [7813] 2 2 3 3 2 3 3 3 3 3 4 3 4 4 3 4 2 3 3 2 3 3 4 2 2 3 4 2 2 2 4 3 3 3 4 3
+ [7849] 4 3 3 3 2 4 4 4 2 2 4 4 2 3 4 3 2 2 3 3 4 3 3 3 4 3 2 3 1 2 4 3 3 3 2 3
+ [7885] 3 4 3 3 3 3 4 2 3 2 4 2 4 2 2 3 3 4 4 4 3 3 3 3 2 4 4 2 3 3 1 2 2 3 1 2
+ [7921] 2 4 3 3 4 3 1 4 4 2 3 4 3 3 3 4 2 4 2 4 3 3 2 2 3 3 3 2 2 3 3 3 3 3 3 3
+ [7957] 2 4 4 4 3 2 3 2 3 2 3 2 4 4 3 2 2 4 3 3 2 2 3 2 4 3 4 3 4 2 3 2 2 4 2 2
+ [7993] 4 3 2 2 3 3 3 4 3 2 4 4 2 3 2 3 2 2 2 3 3 2 4 4 2 3 3 4 3 3 4 3 2 4 2 2
+ [8029] 3 4 4 3 3 2 3 2 3 4 3 4 2 4 4 1 1 3 3 4 3 3 3 1 1 4 2 4 2 2 2 4 3 4 4 2
+ [8065] 2 2 2 3 2 2 2 3 3 3 4 4 2 1 4 1 2 2 3 2 2 3 2 4 4 4 3 4 4 3 3 2 4 3 4 2
+ [8101] 3 2 4 4 4 4 3 2 2 2 3 4 4 4 4 2 3 3 3 3 4 3 2 3 3 4 3 3 3 4 3 3 4 2 3 3
+ [8137] 3 3 2 3 2 3 3 4 3 3 4 3 3 3 4 4 4 3 3 3 3 2 3 4 3 3 3 2 2 4 3 3 4 3 4 4
+ [8173] 3 2 2 3 4 4 4 3 4 2 2 3 2 4 3 3 3 3 2 3 3 4 4 4 3 3 4 4 3 3 3 4 2 2 2 4
+ [8209] 4 4 3 2 3 4 3 4 2 4 4 3 3 2 4 3 3 1 3 2 2 3 2 3 3 2 4 4 2 3 4 4 3 3 4 2
+ [8245] 3 4 4 2 3 2 2 4 1 3 2 4 4 3 3 3 4 3 2 4 4 2 3 4 4 2 4 3 3 3 4 2 4 1 3 4
+ [8281] 4 2 4 4 2 4 3 2 3 4 2 2 4 4 4 4 4 2 3 2 2 3 3 4 3 3 2 3 3 4 2 4 2 3 3 3
+ [8317] 3 4 4 3 3 2 3 4 2 3 4 3 2 3 3 4 4 4 4 4 3 3 4 4 4 3 3 2 3 2 3 3 4 3 3 2
+ [8353] 2 3 2 4 4 3 4 4 2 2 4 4 4 4 4 2 2 2 4 3 3 4 3 2 3 4 3 2 3 3 4 2 2 3 4 2
+ [8389] 3 3 3 4 4 3 4 4 3 1 3 2 4 4 3 3 3 2 4 4 3 4 4 2 3 4 2 2 3 2 2 2 4 3 4 2
+ [8425] 4 3 4 3 2 1 4 3 4 2 2 4 3 3 2 3 4 3 4 3 3 2 2 3 2 3 4 2 4 2 4 4 2 4 4 3
+ [8461] 3 2 3 2 2 3 3 2 2 3 2 2 2 4 3 3 3 2 3 4 3 3 2 3 3 4 2 2 3 4 4 2 3 3 2 3
+ [8497] 2 4 3 3 2 4 4 4 3 3 3 2 3 2 3 3 3 2 3 4 3 2 2 2 4 3 4 3 3 3 3 2 3 4 2 4
+ [8533] 3 3 4 1 4 4 4 2 3 2 2 3 2 3 3 4 3 3 4 4 4 3 3 2 1 3 3 3 3 4 4 3 4 2 4 3
+ [8569] 3 3 3 3 2 3 4 2 2 3 3 3 4 2 3 3 4 4 4 2 3 2 2 3 4 2 3 3 3 3 3 3 2 2 3 2
+ [8605] 4 2 4 3 2 2 3 3 3 2 4 4 3 3 3 2 3 4 2 3 2 2 2 3 4 3 3 4 3 3 4 1 3 2 3 2
+ [8641] 3 3 3 3 3 4 3 4 2 3 1 3 4 3 3 3 3 3 3 3 3 3 2 4 3 3 4 3 2 2 2 2 3 2 3 4
+ [8677] 3 4 3 2 2 4 3 3 3 3 2 2 4 2 4 3 3 2 2 3 3 2 3 2 4 2 3 4 3 4 4 3 3 3 2 4
+ [8713] 2 2 3 3 3 4 2 2 3 1 3 4 2 4 4 2 2 3 3 4 4 4 4 4 3 3 3 3 3 4 2 2 3 3 3 2
+ [8749] 3 2 4 3 4 3 2 3 2 3 4 2 3 2 4 2 4 4 3 2 3 3 2 3 2 4 2 3 2 3 2 3 2 3 4 3
+ [8785] 2 3 3 4 4 4 4 3 4 3 3 2 2 3 4 3 3 2 4 3 3 3 3 3 3 2 2 2 3 3 4 3 2 3 3 2
+ [8821] 4 3 3 3 4 2 2 4 3 2 2 4 3 3 2 3 3 2 2 2 4 4 3 4 3 3 2 4 2 4 4 3 4 4 2 4
+ [8857] 3 2 2 3 2 3 2 2 3 4 4 4 2 2 4 4 3 2 3 4 3 4 2 3 4 2 3 3 3 3 2 2 2 2 4 2
+ [8893] 3 4 2 3 4 3 2 3 2 2 2 3 2 2 4 4 4 4 3 3 3 3 3 3 3 2 3 1 3 3 4 3 3 4 4 3
+ [8929] 4 4 2 2 3 3 3 4 2 3 3 4 3 4 3 4 2 3 4 2 4 4 3 2 3 3 2 2 3 3 3 4 3 3 2 3
+ [8965] 2 3 3 2 3 3 2 4 3 2 4 4 2 2 2 3 3 4 3 3 2 3 2 2 3 3 3 2 2 2 2 1 4 3 4 2
+ [9001] 3 4 2 2 2 3 3 3 4 3 2 2 3 3 2 3 3 3 3 3 2 4 3 3 3 4 3 2 2 2 4 2 2 2 3 4
+ [9037] 4 3 3 3 4 2 3 4 4 3 2 3 4 1 3 4 2 1 4 3 3 3 2 3 4 2 3 4 4 3 3 4 4 3 4 3
+ [9073] 2 4 2 3 2 3 2 4 2 3 3 3 2 4 4 3 2 3 4 3 2 2 3 4 4 4 4 3 4 3 3 3 2 4 2 3
+ [9109] 3 2 3 2 4 2 3 4 3 3 2 4 2 4 2 2 2 2 4 3 4 4 4 3 3 2 2 2 3 2 4 2 3 2 3 4
+ [9145] 3 3 4 2 3 2 3 3 3 3 3 4 3 2 3 2 2 4 2 3 4 3 3 3 4 4 3 4 2 2 4 3 4 2 3 2
+ [9181] 3 2 4 3 2 2 3 3 3 2 3 3 2 3 2 3 3 2 3 4 3 3 2 3 4 3 3 3 3 2 4 3 3 3 4 4
+ [9217] 2 3 2 3 3 2 4 4 4 2 2 3 4 2 3 2 3 4 3 4 4 3 4 2 2 2 3 4 3 3 2 3 3 2 3 3
+ [9253] 2 3 4 4 2 2 4 2 2 4 4 4 2 2 3 3 2 2 2 4 2 2 3 2 3 3 2 2 2 4 2 2 3 4 2 4
+ [9289] 3 4 2 2 2 2 2 2 3 4 3 2 2 3 2 3 2 2 4 2 3 2 3 3 2 3 4 4 3 4 2 3 2 2 2 2
+ [9325] 3 2 2 3 4 3 3 3 2 2 3 2 2 2 2 4 2 2 2 2 3 2 4 3 2 2 4 2 3 4 2 2 2 4 4 3
+ [9361] 4 4 2 2 3 3 3 3 2 3 4 3 3 4 2 3 4 4 3 2 3 2 2 3 3 2 2 4 2 2 4 3 4 2 2 4
+ [9397] 2 2 3 2 3 2 3 2 3 4 2 3 2 2 4 3 2 3 4 4 3 4 3 4 2 2 4 2 2 2 4 4 4 4 4 2
+ [9433] 3 2 2 3 3 2 3 3 3 3 3 2 4 2 4 3 3 4 3 3 4 2 2 4 3 4 4 4 3 3 2 3 4 2 2 2
+ [9469] 4 4 4 3 4 4 3 4 2 2 3 2 2 3 2 2 4 3 4 3 2 4 3 3 2 4 4 3 2 2 4 2 3 4 2 4
+ [9505] 2 3 2 2 2 2 3 3 2 2 3 2 2 2 2 2 2 4 3 2 4 3 2 2 2 3 4 2 3 3 4 2 4 4 2 3
+ [9541] 4 3 2 4 4 3 2 3 4 4 3 3 4 2 3 3 2 3 3 4 2 2 2 2 4 2 3 4 3 4 3 3 4 4 3 4
+ [9577] 4 2 3 2 2 2 2 2 2 3 4 2 3 2 2 2 2 3 2 4 2 3 2 4 4 4 2 3 4 3 2 2 2 3 2 2
+ [9613] 4 2 3 2 3 4 3 4 2 3 3 3 3 3 3 3 2 3 3 4 2 3 4 2 2 2 3 4 2 3 1 2 2 2 3 3
+ [9649] 3 2 4 2 3 2 4 4 4 3 3 4 3 3 2 3 3 3 4 3 2 3 2 2 2 2 4 2 2 3 3 4 4 4 2 4
+ [9685] 3 3 1 4 2 2 2 2 2 2 2 2 4 2 2 2 3 4 3 4 2 3 2 3 3 3 3 3 2 2 4 2 2 4 2 4
+ [9721] 2 3 3 4 3 2 2 2 3 3 4 4 2 3 2 4 2 2 3 3 2 2 3 2 2 2 3 2 3 2 4 2 4 3 4 2
+ [9757] 2 3 4 2 3 2 4 2 2 2 2 2 2 3 3 2 2 4 2 2 2 3 2 2 4 2 3 3 2 2 2 3 3 2 2 2
+ [9793] 2 2 4 2 2 3 2 3 4 3 4 2 4 2 2 4 2 3 2 4 4 4 2 2 2 4 4 4 4 4 2 3 2 3 3 4
+ [9829] 3 2 2 2 2 2 3 2 2 3 2 4 4 4 3 2 2 2 2 4 2 3 2 2 2 3 4 4 2 4 4 2 2 2 3 2
+ [9865] 4 3 2 4 2 4 2 2 2 4 3 3 2 4 2 2 2 3 2 2 3 4 3 2 2 2 2 3 3 2 2 2 2 4 3 2
+ [9901] 2 3 3 2 2 4 2 2 2 2 2 4 2 2 3 2 3 2 2 2 2 4 4 2 2 2 2 2 2 2 2 4 2 4 2 2
+ [9937] 2 3 2 2 2 2 2 2 2 2 4 4 3 3 2 2 2 4 2 4 2 2 4 2 2 4 3 3 3 3 2 4 3 2 2 2
+ [9973] 2 2 3 2 2 4 2 3 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 3 2 2 2 2
+
+Within cluster sum of squares by cluster:
+[1] 16442.67 40315.05 20198.28 13630.04
+ (between_SS / total_SS =  24.5 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+[6] "betweenss"    "size"         "iter"         "ifault"      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fviz_cluster</span>(km, numerics_norm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/kmedias-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>    km<span class="sc">$</span>size</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  596 2365 3773 3266</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="test-de-calidad" class="level1">
+<h1>Test de calidad</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">withinss=</span>km<span class="sc">$</span>withinss, <span class="at">size=</span>km<span class="sc">$</span>size)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(m, <span class="fu">aes</span>(size,withinss))<span class="sc">+</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>()<span class="sc">+</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)<span class="sc">+</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"cardinalidad (size)"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">y=</span><span class="st">"magnitud (whithinss)"</span>)<span class="sc">+</span> </span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_text_repel</span>(<span class="at">label=</span><span class="fu">rownames</span>(m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/test%20de%20calidad-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="calidad-por-el-método-de-la-silueta" class="level2">
+<h2 class="anchored" data-anchor-id="calidad-por-el-método-de-la-silueta">Calidad por el método de la silueta</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>    silueta <span class="ot">&lt;-</span> <span class="fu">silhouette</span>(km<span class="sc">$</span>cluster, distancia)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(silueta[,<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1049719</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">kcca</span>(numerics_norm, <span class="dv">4</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    importance <span class="ot">&lt;-</span> <span class="fu">FeatureImpCluster</span>(res, <span class="fu">as.data.table</span>(numerics_norm))</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(importance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">barplot</span>(res, <span class="at">bycluster=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    km <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(numerics_norm, <span class="at">centers =</span> <span class="dv">4</span>, <span class="at">iter.max =</span> <span class="dv">100</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>K-means clustering with 4 clusters of sizes 596, 2365, 3773, 3266
+
+Cluster means:
+       budget     revenue    runtime  popularity    voteAvg   voteCount
+1  2.87759334  2.95704118  0.8054207  0.74870037  0.4867485  2.82467255
+2 -0.40651107 -0.33019481 -0.6003093 -0.06467300 -0.8395254 -0.42417482
+3 -0.09186791 -0.08732828  0.4774782 -0.03413420  0.5395457  0.02908794
+4 -0.12462625 -0.19963142 -0.2638777 -0.05036296 -0.1042040 -0.24191065
+  genresAmount productionCoAmount productionCountriesAmount actorsAmount
+1    0.5602010          0.2806700               -0.08277371 -0.056188513
+2   -0.7872864         -0.3763204                0.31850255  0.079297248
+3   -0.4108179          0.2945294               -0.07783123 -0.032908866
+4    0.9424582         -0.1189654               -0.12561793 -0.009150179
+  castWomenAmount castMenAmount
+1     -0.10379005    -0.1631444
+2      0.29335017     0.5119361
+3     -0.07969332    -0.1578133
+4     -0.10141806    -0.1586238
+
+Clustering vector:
+    [1] 2 4 1 1 1 1 3 3 1 3 1 1 3 4 3 3 1 3 3 1 3 3 3 3 3 3 3 3 3 3 1 4 3 3 3 4
+   [37] 3 3 3 4 1 3 3 1 3 3 1 4 4 1 3 3 4 1 4 3 3 3 3 3 3 3 3 4 4 1 1 1 1 3 3 1
+   [73] 3 3 4 4 3 3 3 3 3 3 3 4 3 3 4 1 1 3 1 3 1 4 3 3 4 3 4 4 3 3 3 3 1 4 3 3
+  [109] 3 3 3 3 4 3 1 1 4 4 3 3 3 3 3 3 1 3 3 3 4 3 3 3 4 4 3 1 3 3 3 3 4 4 3 4
+  [145] 1 3 3 1 3 3 3 3 4 1 4 1 1 3 3 1 3 1 3 1 3 3 3 3 1 3 1 3 3 3 4 1 3 4 4 3
+  [181] 3 4 3 1 3 3 3 3 3 3 1 1 3 3 3 3 4 3 3 3 3 3 1 4 3 3 3 3 3 4 3 1 1 1 3 3
+  [217] 3 1 1 3 3 3 3 1 3 4 4 3 4 3 1 3 3 4 4 3 3 4 3 3 4 3 4 3 3 3 3 3 3 1 3 1
+  [253] 3 4 3 3 3 3 3 3 3 4 3 4 4 4 4 1 3 3 4 3 3 3 3 1 4 3 1 1 1 1 3 3 1 3 3 3
+  [289] 3 4 3 3 1 3 3 3 3 1 3 3 3 1 3 3 3 3 3 1 3 3 3 1 1 1 1 1 3 1 1 3 3 3 3 1
+  [325] 1 4 4 3 3 3 3 3 3 2 3 3 3 3 3 3 4 1 3 3 1 3 3 3 1 3 4 3 3 3 1 3 3 3 3 3
+  [361] 3 3 4 1 3 3 3 1 1 1 1 1 1 3 1 3 3 3 3 3 3 1 1 3 4 3 3 3 3 3 3 3 3 3 3 1
+  [397] 3 1 3 3 1 1 4 3 4 3 3 3 3 4 4 1 3 3 3 1 3 4 4 3 3 1 3 3 2 3 4 3 3 3 3 3
+  [433] 3 3 3 2 1 1 1 1 1 3 3 4 4 3 3 3 4 3 3 3 3 3 4 4 4 3 4 3 3 3 3 3 3 3 3 3
+  [469] 1 1 4 3 3 3 1 1 3 4 3 1 4 3 3 1 3 3 3 4 3 3 3 3 3 4 4 3 4 4 1 3 3 3 3 3
+  [505] 4 3 4 1 4 3 3 3 4 4 4 1 3 3 3 1 1 1 1 1 3 4 3 3 3 3 3 3 3 4 3 3 3 3 3 4
+  [541] 3 3 4 3 3 3 4 3 3 3 3 3 1 3 3 3 3 3 3 1 3 3 3 3 3 4 1 3 1 3 4 3 3 4 2 4
+  [577] 3 3 3 3 3 4 4 4 1 3 2 4 4 3 3 3 1 3 3 3 3 1 3 4 3 3 4 3 3 4 3 1 3 3 4 3
+  [613] 3 3 1 4 4 4 3 2 3 3 3 3 3 3 3 4 3 3 1 1 3 3 3 4 3 3 4 3 3 3 3 3 2 3 1 4
+  [649] 3 3 3 3 3 4 4 3 3 3 2 4 3 3 1 4 3 1 3 4 3 3 4 4 3 3 3 3 3 3 4 4 3 4 3 2
+  [685] 2 2 3 3 3 2 3 3 3 1 3 1 3 3 1 1 3 1 3 3 3 4 3 3 3 3 3 3 4 3 4 1 1 3 3 4
+  [721] 3 4 3 3 1 1 1 1 1 3 3 4 3 4 4 3 3 3 1 1 3 3 3 4 3 4 1 3 3 3 3 4 1 4 4 2
+  [757] 4 1 3 3 3 4 1 4 3 4 2 3 3 3 3 2 3 3 1 3 4 3 4 4 3 4 1 3 3 2 1 1 3 3 3 1
+  [793] 3 4 4 3 4 3 3 4 4 4 3 4 4 3 4 1 4 4 3 3 4 4 3 3 3 3 3 4 4 3 3 4 3 3 3 1
+  [829] 3 3 4 4 4 3 3 3 3 3 4 4 4 4 4 4 3 3 3 3 2 2 3 4 4 3 4 3 3 1 4 4 4 1 1 1
+  [865] 3 3 1 3 3 3 3 3 4 3 4 3 3 3 3 4 4 2 2 3 3 1 3 3 1 3 1 3 3 3 4 3 3 2 2 3
+  [901] 3 4 3 3 4 4 3 3 3 3 3 4 3 3 4 4 4 3 3 3 3 4 4 3 4 3 3 3 3 3 1 4 3 4 4 3
+  [937] 3 3 2 3 3 3 4 4 4 3 3 3 3 3 4 4 2 3 3 3 3 3 2 4 3 3 3 3 3 3 4 3 3 4 3 3
+  [973] 3 4 3 3 4 3 3 3 2 3 3 3 4 3 3 2 3 2 2 2 2 3 4 3 3 3 3 4 3 4 3 4 3 4 4 3
+ [1009] 3 3 3 4 3 3 4 1 3 3 3 3 3 3 3 3 3 3 3 4 4 3 3 4 3 3 3 4 3 2 3 3 3 4 3 4
+ [1045] 4 3 4 1 4 3 3 3 3 3 4 3 4 3 4 3 3 4 4 1 3 3 2 3 3 4 2 3 1 1 3 2 2 4 1 3
+ [1081] 3 4 4 4 2 2 4 3 3 4 3 3 3 4 4 3 1 4 3 3 4 3 3 3 3 4 3 3 4 2 3 3 3 3 3 3
+ [1117] 3 3 3 2 4 3 2 3 4 2 4 3 3 3 3 3 2 4 3 4 3 4 4 3 3 4 4 3 2 2 3 4 4 1 4 4
+ [1153] 4 3 3 4 3 4 4 3 3 3 1 3 2 4 3 4 3 2 4 3 4 4 3 3 3 1 3 4 4 4 2 4 1 2 3 4
+ [1189] 4 3 2 3 3 4 2 2 2 3 4 3 3 3 3 4 3 3 3 4 4 4 3 1 4 3 3 4 3 4 4 4 4 2 3 4
+ [1225] 4 4 4 3 3 3 2 3 3 3 2 4 3 3 4 3 3 3 4 3 3 3 4 3 4 3 2 4 3 3 3 3 4 3 4 3
+ [1261] 4 3 3 3 3 4 4 4 3 4 3 3 3 2 2 2 4 2 3 3 3 3 4 4 3 3 3 3 1 3 1 3 3 1 3 2
+ [1297] 2 4 3 3 3 4 3 3 4 3 4 4 4 3 2 4 3 3 3 1 1 3 3 3 3 1 4 1 4 2 3 3 3 4 3 4
+ [1333] 2 2 4 3 4 4 3 3 2 3 4 4 3 4 3 4 4 4 4 3 1 3 3 4 4 4 2 2 4 4 1 3 2 2 3 3
+ [1369] 3 2 1 3 4 4 3 3 3 4 1 1 4 4 1 3 2 2 3 4 4 4 4 4 2 3 3 4 3 2 3 4 4 4 3 4
+ [1405] 4 3 4 3 4 3 4 3 4 4 3 4 3 3 3 4 4 3 4 4 3 3 3 4 2 4 4 2 3 3 3 4 4 4 4 3
+ [1441] 3 4 4 4 2 3 2 3 2 3 4 3 4 2 3 3 4 3 3 3 4 4 4 3 4 3 3 1 3 4 3 3 4 4 3 3
+ [1477] 3 4 4 3 3 4 4 3 4 3 4 3 3 4 4 3 4 3 3 3 3 3 2 4 3 3 4 4 2 4 4 4 3 3 4 2
+ [1513] 4 4 3 3 3 4 3 3 4 4 3 3 4 1 3 3 3 3 4 4 3 3 4 4 1 4 3 2 2 3 3 1 3 3 4 3
+ [1549] 3 4 3 4 3 4 3 3 3 4 4 1 4 4 3 2 3 3 4 4 3 3 3 4 3 2 3 3 3 4 4 4 4 3 2 3
+ [1585] 3 3 2 3 3 4 2 4 3 4 4 4 4 4 3 2 2 4 4 4 3 4 4 4 4 4 4 3 4 4 4 3 4 4 3 3
+ [1621] 3 4 3 3 3 4 3 4 2 4 4 4 3 4 3 4 4 4 3 4 2 3 4 4 4 2 3 2 2 2 2 4 4 1 3 1
+ [1657] 4 4 4 3 2 3 2 4 3 3 3 3 4 3 4 3 3 3 2 3 2 2 3 3 3 1 1 2 1 2 2 4 3 4 4 4
+ [1693] 4 4 3 1 4 4 4 3 4 2 2 4 3 4 4 3 3 4 2 4 3 3 2 3 3 4 4 3 3 4 4 3 4 3 2 2
+ [1729] 4 3 4 4 4 4 3 3 3 2 3 2 4 4 2 3 4 4 4 2 1 4 2 4 4 4 4 4 2 2 2 1 4 2 4 4
+ [1765] 4 1 3 3 4 3 4 3 2 3 4 3 4 4 4 2 2 3 2 4 4 3 4 2 3 3 2 3 2 4 3 2 3 4 4 3
+ [1801] 3 3 3 4 3 4 2 2 4 1 1 1 4 3 4 4 4 2 3 3 2 4 2 3 2 4 4 2 3 4 2 4 3 1 1 1
+ [1837] 1 1 1 4 4 3 4 3 4 3 4 4 4 4 4 3 3 4 3 4 4 3 3 4 2 4 2 2 2 2 2 2 4 4 3 3
+ [1873] 4 3 3 4 4 2 3 4 3 4 4 4 3 2 4 3 2 4 4 2 3 3 4 4 4 3 4 3 3 2 3 2 4 4 3 4
+ [1909] 2 4 3 3 2 4 3 3 3 2 2 3 3 2 4 3 3 4 2 3 3 4 4 3 4 3 1 1 3 4 3 3 2 4 3 4
+ [1945] 4 4 1 3 3 3 1 3 4 3 1 4 2 2 2 2 2 4 4 3 3 3 4 4 3 4 3 4 3 3 3 3 4 4 3 4
+ [1981] 4 4 3 3 3 3 2 3 4 4 4 4 3 4 3 4 3 2 3 4 3 3 1 3 2 3 2 4 4 1 4 2 3 3 4 4
+ [2017] 3 4 3 4 2 4 3 4 4 2 2 3 3 4 3 4 3 4 3 4 3 4 3 3 4 1 3 4 4 3 4 3 3 3 3 3
+ [2053] 4 3 3 4 4 2 3 4 3 3 2 2 4 3 4 4 4 2 4 2 2 1 4 3 3 3 4 4 4 4 4 4 4 3 4 4
+ [2089] 4 4 3 3 4 3 3 4 4 4 3 3 4 4 4 4 4 3 4 4 4 4 2 2 4 4 3 3 4 3 3 4 4 4 3 3
+ [2125] 3 4 3 4 3 3 3 3 4 2 3 4 2 4 3 4 3 3 2 4 3 3 4 4 2 3 2 4 3 4 4 4 4 3 2 3
+ [2161] 4 2 3 4 3 3 3 2 4 3 4 2 4 3 2 2 3 3 4 3 3 3 3 3 4 3 3 3 2 2 3 4 3 4 4 3
+ [2197] 3 2 4 4 4 4 3 4 4 3 3 4 4 4 3 2 3 3 4 4 3 3 3 2 3 3 3 2 3 3 2 4 3 3 1 3
+ [2233] 3 4 4 3 3 4 4 3 3 3 2 4 2 4 2 2 3 4 4 4 4 4 4 3 4 2 3 2 3 4 4 3 4 3 4 4
+ [2269] 4 4 3 2 3 4 2 2 4 4 3 4 2 4 3 3 3 4 4 3 4 3 2 3 3 3 2 4 4 3 4 3 3 3 2 2
+ [2305] 4 3 4 4 3 3 4 4 3 3 3 4 3 3 3 4 3 4 4 1 3 4 4 2 1 4 3 4 4 3 4 3 3 4 4 4
+ [2341] 3 4 3 4 4 3 3 4 3 2 4 4 4 4 4 3 3 4 3 4 4 4 3 4 3 3 1 4 3 3 3 4 3 3 4 2
+ [2377] 4 4 4 3 4 2 4 3 4 4 4 3 4 3 3 3 3 4 3 3 3 2 3 3 4 2 3 4 3 3 3 4 4 3 4 4
+ [2413] 2 4 4 2 2 3 3 2 3 4 4 3 2 3 3 3 3 4 4 3 1 4 3 2 3 4 4 4 3 4 2 4 3 4 4 4
+ [2449] 4 3 3 4 4 3 2 2 4 3 4 2 3 2 4 3 3 3 3 3 3 1 3 3 3 3 4 4 4 3 4 4 4 3 3 4
+ [2485] 2 4 4 4 2 4 4 4 4 4 3 3 2 3 2 4 3 3 4 1 3 3 4 4 1 1 4 4 3 3 3 2 3 4 2 2
+ [2521] 3 4 3 3 4 2 4 4 4 4 4 3 4 3 3 2 2 4 4 4 3 2 2 2 2 4 3 4 2 3 2 3 3 2 4 4
+ [2557] 4 4 4 4 4 3 4 3 4 3 3 3 2 4 3 4 4 3 4 1 4 3 4 2 2 4 4 4 4 4 4 2 4 3 3 2
+ [2593] 4 1 4 2 4 4 2 3 3 4 4 2 2 3 4 4 4 4 4 4 2 2 4 4 3 4 4 3 2 3 4 4 2 3 4 2
+ [2629] 4 4 2 4 4 4 3 2 3 4 4 1 3 3 4 2 4 3 2 1 2 2 4 4 3 2 2 4 2 4 2 4 3 4 4 3
+ [2665] 4 4 4 2 2 4 3 3 3 4 2 2 4 4 4 4 4 4 4 2 4 4 3 4 3 4 2 4 4 3 4 2 4 2 2 2
+ [2701] 3 4 4 4 4 3 4 4 1 2 3 4 2 4 2 2 4 4 4 3 3 2 3 2 2 3 4 4 2 4 4 4 4 4 2 2
+ [2737] 2 4 2 3 4 4 4 2 4 4 4 2 2 4 3 4 3 4 3 2 4 4 4 3 4 2 4 2 1 1 4 2 4 2 2 4
+ [2773] 4 3 4 4 4 2 4 4 4 3 3 3 3 3 4 3 3 4 3 4 3 4 2 3 4 2 4 3 4 4 3 4 4 4 2 3
+ [2809] 4 4 3 2 3 2 3 2 3 4 2 4 2 3 4 4 4 2 4 4 3 3 3 2 2 4 3 4 2 4 3 3 4 2 4 3
+ [2845] 3 4 4 2 3 1 4 4 2 4 4 2 2 4 4 3 4 4 4 3 3 4 2 4 4 4 4 2 2 4 4 3 4 4 2 3
+ [2881] 3 4 4 3 4 3 2 4 2 4 3 4 3 2 4 4 4 4 4 2 3 3 4 2 3 4 3 4 4 3 4 4 4 3 4 4
+ [2917] 4 2 4 3 3 1 4 2 2 2 4 4 3 4 4 4 4 2 4 4 4 4 4 2 4 3 4 3 4 4 3 4 3 2 4 3
+ [2953] 3 4 4 4 3 2 4 4 4 4 2 3 4 2 3 4 4 2 2 4 3 4 3 2 4 3 4 4 4 2 4 2 4 4 4 2
+ [2989] 3 4 4 2 3 3 2 4 3 2 2 4 4 2 4 4 2 2 2 4 2 2 4 3 4 2 3 4 4 3 3 4 4 4 3 3
+ [3025] 3 2 4 2 2 4 4 2 4 4 4 4 1 3 4 4 4 2 2 4 2 4 3 3 4 2 2 4 4 4 4 4 4 4 4 4
+ [3061] 2 3 4 4 2 3 2 2 4 3 4 2 2 4 4 2 4 3 3 4 1 2 3 2 3 2 2 4 3 3 4 3 4 4 2 2
+ [3097] 4 3 4 2 3 2 1 2 4 2 2 4 4 4 2 2 3 4 4 2 2 4 4 2 1 3 4 4 4 3 3 4 1 3 2 4
+ [3133] 2 3 4 2 3 3 2 4 4 3 3 3 3 4 3 3 3 1 1 4 2 4 4 2 4 4 3 3 2 4 4 3 2 2 2 3
+ [3169] 4 2 3 2 3 4 2 3 4 2 2 3 4 3 4 4 4 3 2 2 4 1 2 4 2 3 2 2 3 4 4 3 4 2 3 2
+ [3205] 3 2 4 4 4 3 1 2 4 2 3 2 4 4 3 3 4 2 3 3 2 2 2 3 4 4 1 4 3 4 2 2 3 4 3 1
+ [3241] 4 3 3 4 3 2 2 1 4 4 2 2 2 4 3 4 4 3 3 3 4 3 3 4 2 3 3 4 3 4 4 2 4 3 2 4
+ [3277] 3 3 4 4 3 4 4 3 2 4 4 3 3 3 3 4 2 3 2 4 2 3 4 4 3 4 4 4 2 4 4 4 4 4 4 4
+ [3313] 3 4 4 2 4 4 4 3 4 3 4 4 4 4 3 4 4 1 3 3 4 3 4 4 3 4 3 4 2 3 2 3 4 3 4 4
+ [3349] 4 4 4 2 2 3 4 3 3 4 3 4 4 4 4 3 4 4 3 2 3 4 4 2 4 4 2 3 2 2 2 2 2 4 1 4
+ [3385] 4 3 2 4 3 3 4 2 2 2 2 4 3 1 3 2 2 2 4 2 4 2 4 2 4 2 2 3 2 3 4 3 3 4 4 4
+ [3421] 3 4 2 2 2 2 2 2 4 4 4 4 3 3 3 2 2 4 4 4 3 2 2 2 4 4 2 3 4 4 4 4 4 2 3 4
+ [3457] 3 2 2 2 3 4 2 2 2 2 2 2 4 3 4 4 4 3 3 4 3 4 4 2 2 3 4 2 2 3 3 3 3 3 3 4
+ [3493] 3 2 2 2 4 4 3 2 4 3 4 4 3 3 4 3 1 4 3 1 2 2 2 2 4 1 1 4 3 4 4 2 3 3 4 2
+ [3529] 4 2 2 2 3 2 4 4 2 4 4 4 3 4 4 2 2 4 2 4 4 2 2 3 3 3 2 4 4 2 4 3 4 2 2 2
+ [3565] 4 2 3 3 2 3 3 3 4 4 2 4 4 3 2 3 3 4 3 4 4 2 3 3 2 3 4 4 2 3 4 3 4 3 4 2
+ [3601] 4 4 4 3 4 4 4 4 3 3 3 3 4 2 1 4 3 3 4 4 2 4 4 3 3 3 4 3 2 3 4 4 3 3 3 2
+ [3637] 2 2 3 4 3 3 4 2 3 4 4 4 4 4 4 4 3 4 4 2 4 3 4 2 1 4 2 2 4 3 3 4 4 2 3 4
+ [3673] 3 4 3 4 4 4 4 4 4 4 2 3 4 2 2 2 3 3 4 2 3 4 4 1 3 1 3 3 1 4 4 4 2 3 4 2
+ [3709] 1 4 2 3 3 4 1 3 3 1 2 4 3 3 3 3 4 4 4 3 4 2 4 3 4 4 1 1 4 3 3 4 2 3 3 1
+ [3745] 4 1 4 2 4 4 4 3 4 4 3 2 1 4 4 4 4 2 4 3 3 3 3 4 2 4 4 1 2 3 3 3 3 3 4 3
+ [3781] 3 4 4 4 1 2 4 3 1 4 4 1 3 4 3 4 3 4 3 4 4 4 4 4 4 4 4 4 4 4 2 4 3 3 2 4
+ [3817] 4 3 4 2 1 4 4 4 2 4 3 2 4 4 4 3 3 4 3 4 3 2 4 4 4 2 2 4 4 2 4 4 4 3 3 2
+ [3853] 4 1 3 1 4 3 4 4 3 4 4 4 2 3 2 2 3 3 3 4 1 4 4 3 3 3 3 4 4 2 3 4 4 3 3 2
+ [3889] 3 2 2 3 2 4 2 4 3 2 1 2 4 3 4 3 4 2 4 2 4 3 3 4 4 3 4 3 4 4 4 4 3 3 3 1
+ [3925] 2 4 4 4 3 4 3 2 4 3 4 3 4 4 4 4 4 4 4 4 4 4 3 1 1 3 3 1 4 1 2 3 4 3 3 4
+ [3961] 4 4 2 1 3 3 4 3 3 2 2 2 4 3 2 2 3 4 3 4 1 2 2 4 4 3 3 2 4 4 4 3 4 3 4 3
+ [3997] 4 2 4 4 2 4 2 4 4 3 1 1 1 3 3 3 4 3 2 3 2 3 2 4 4 3 2 3 4 2 3 4 2 1 4 3
+ [4033] 3 4 1 1 1 3 1 4 3 3 1 3 3 1 3 1 4 4 4 1 1 4 4 3 1 4 4 4 2 3 4 3 4 4 2 4
+ [4069] 4 3 3 3 4 4 4 4 3 4 4 4 4 2 3 4 4 3 3 1 1 3 2 2 3 3 2 4 4 3 3 3 4 4 4 4
+ [4105] 2 4 2 2 4 1 3 2 3 4 3 4 3 3 3 3 3 4 3 3 3 2 3 4 3 2 2 2 4 2 1 2 2 4 4 4
+ [4141] 1 3 3 4 3 4 3 2 4 4 4 3 4 3 4 4 4 3 2 4 3 3 3 4 3 3 4 1 4 3 4 3 3 2 2 4
+ [4177] 4 2 1 1 1 3 3 4 3 2 4 4 4 4 4 1 4 2 3 3 2 4 3 4 2 4 3 3 2 1 1 2 2 2 4 3
+ [4213] 3 4 4 4 4 2 3 2 3 2 4 2 4 3 4 2 2 3 4 3 3 3 4 2 2 4 3 4 3 3 3 3 2 3 4 3
+ [4249] 3 4 4 2 4 2 4 1 3 2 3 3 4 1 4 1 1 4 3 3 3 4 4 3 3 3 4 4 3 3 3 4 4 2 2 2
+ [4285] 3 4 3 4 4 3 1 2 3 1 3 1 1 3 3 4 3 3 3 2 3 3 4 3 3 2 4 2 2 2 2 4 2 1 3 4
+ [4321] 4 3 2 4 2 4 2 4 3 4 2 4 3 2 4 4 4 1 1 3 1 1 4 1 3 3 1 3 4 3 3 4 4 4 2 4
+ [4357] 2 4 2 1 2 4 3 2 2 2 4 2 3 3 2 3 2 3 1 4 3 4 3 2 2 2 4 2 4 3 4 2 3 2 1 1
+ [4393] 4 3 3 4 4 3 4 2 4 4 1 1 3 2 4 4 3 2 2 4 3 4 4 4 4 4 4 2 4 3 2 4 3 2 4 4
+ [4429] 3 3 3 3 3 3 3 3 3 3 2 4 4 2 4 1 2 4 4 3 1 4 4 4 3 3 2 3 2 3 3 4 1 1 3 3
+ [4465] 3 3 1 1 4 2 2 1 3 4 2 3 4 2 4 4 4 1 3 3 3 3 4 3 1 4 3 2 4 3 2 2 4 3 2 4
+ [4501] 3 1 3 1 4 3 2 3 2 4 4 3 3 3 2 4 2 2 2 4 3 4 4 2 4 4 4 4 2 2 4 4 4 3 4 3
+ [4537] 3 2 1 2 4 4 4 4 4 2 4 2 1 1 4 4 4 4 3 2 4 4 4 4 2 2 4 4 4 2 3 3 3 2 4 2
+ [4573] 1 4 3 2 1 1 1 4 1 1 1 4 2 1 4 4 4 4 3 1 3 3 4 3 4 2 4 2 3 4 4 2 2 4 3 2
+ [4609] 2 2 3 3 3 4 4 2 3 2 2 3 4 3 2 3 2 2 4 4 3 2 3 1 3 3 3 1 3 3 2 2 3 4 2 2
+ [4645] 2 3 3 1 4 3 3 4 2 4 4 3 4 3 3 4 3 2 4 3 2 1 2 2 4 3 3 2 2 1 3 2 3 4 3 4
+ [4681] 2 2 2 4 4 2 3 2 3 3 3 4 3 1 3 3 3 2 2 4 3 4 2 3 1 3 2 2 2 3 1 2 3 2 4 1
+ [4717] 4 2 2 4 3 1 4 4 2 4 4 1 4 1 1 4 4 2 3 3 2 3 4 4 2 1 2 2 3 1 3 3 2 2 3 3
+ [4753] 2 3 3 3 3 3 3 3 3 3 3 1 3 1 4 3 2 3 3 2 3 4 3 3 3 2 3 3 2 3 3 2 3 2 2 3
+ [4789] 3 2 2 3 4 2 2 3 4 3 2 2 2 4 2 4 4 3 4 4 3 4 3 3 4 3 2 4 1 2 2 4 1 3 2 2
+ [4825] 3 1 3 4 2 4 2 4 2 3 4 1 2 4 2 2 4 1 4 4 4 3 4 4 1 4 3 4 4 4 3 1 4 2 4 2
+ [4861] 3 2 2 1 2 4 2 4 3 1 3 4 4 1 4 3 4 3 4 3 1 4 3 3 2 2 2 3 4 3 4 1 1 2 2 2
+ [4897] 4 3 3 4 4 3 3 3 4 3 2 2 3 4 3 2 2 2 1 4 2 2 3 3 3 4 3 3 1 2 4 3 3 1 1 4
+ [4933] 3 4 2 4 4 3 2 2 4 3 1 2 2 2 1 1 2 3 3 4 2 1 4 4 4 2 2 4 4 2 2 4 2 4 3 4
+ [4969] 2 4 4 3 2 3 4 3 2 3 2 4 2 1 3 4 3 4 3 2 3 4 4 1 1 4 3 4 3 3 2 3 3 3 3 3
+ [5005] 3 2 4 4 2 4 3 4 3 2 4 2 3 3 3 4 3 3 2 3 2 4 2 1 1 4 4 4 4 2 2 2 3 3 4 3
+ [5041] 3 4 4 3 1 2 3 2 3 2 2 1 3 2 4 2 4 3 2 2 4 3 2 3 2 2 4 3 3 3 2 4 2 1 1 1
+ [5077] 3 2 3 2 3 2 4 3 4 4 4 1 3 3 2 4 2 2 2 3 4 4 4 4 4 3 4 2 4 4 4 1 2 4 3 3
+ [5113] 2 3 2 4 4 3 2 2 2 4 4 4 2 3 1 1 4 4 4 2 3 3 3 4 4 4 3 3 2 3 4 2 3 2 1 4
+ [5149] 1 1 3 3 2 4 3 4 2 3 4 3 3 3 2 4 3 2 2 3 2 2 4 3 2 3 4 1 4 2 4 1 3 3 4 2
+ [5185] 3 3 3 2 3 2 2 2 3 3 2 3 3 3 2 3 2 3 4 4 2 2 3 3 3 3 3 4 4 4 4 1 2 2 3 3
+ [5221] 3 2 2 3 4 3 2 3 3 2 4 4 4 4 3 4 4 2 4 4 3 3 2 2 3 3 2 4 3 3 3 4 4 2 3 4
+ [5257] 1 3 3 1 3 2 4 2 4 4 2 3 3 4 1 3 1 4 3 1 3 2 4 1 3 2 2 2 2 2 4 3 2 3 2 2
+ [5293] 2 2 3 1 4 3 4 2 4 1 3 4 3 4 3 3 4 4 2 4 4 2 3 2 4 2 2 2 3 4 2 3 2 2 3 4
+ [5329] 2 4 1 3 2 4 2 3 2 2 2 2 2 2 4 4 2 4 2 3 2 4 4 2 3 2 3 3 4 4 3 3 1 4 2 4
+ [5365] 3 4 2 2 4 4 2 3 3 3 2 2 2 2 3 3 3 2 4 4 3 2 2 4 3 3 3 3 3 4 2 4 4 3 1 1
+ [5401] 4 3 3 3 4 4 3 4 3 4 4 4 4 4 2 4 4 4 4 2 4 3 3 2 3 4 2 4 3 2 4 3 4 4 2 4
+ [5437] 3 3 3 3 4 4 4 2 3 3 2 3 4 4 1 3 3 2 2 4 2 1 4 4 2 4 4 2 4 4 3 3 4 2 4 3
+ [5473] 4 4 3 3 3 2 4 2 4 3 4 3 4 3 3 4 2 4 2 3 4 4 3 3 4 3 1 3 3 2 2 2 4 4 2 1
+ [5509] 3 2 4 2 3 2 4 3 3 3 2 2 4 3 3 2 3 4 4 2 3 3 4 4 3 4 2 3 4 2 3 2 3 2 3 4
+ [5545] 2 4 2 1 3 2 2 3 4 3 3 3 3 2 2 4 2 3 3 2 3 2 2 3 2 3 3 2 4 4 4 2 4 4 4 4
+ [5581] 3 3 3 1 2 4 4 3 2 2 4 4 3 3 2 2 3 4 4 4 4 3 3 4 3 1 4 2 2 4 2 2 2 1 3 1
+ [5617] 3 3 2 3 2 4 4 3 2 1 1 4 2 3 2 3 3 3 3 4 3 1 1 2 4 4 1 2 4 4 2 4 3 3 3 3
+ [5653] 3 3 3 2 3 3 4 2 4 4 3 3 3 1 3 2 3 3 4 4 2 3 1 2 4 3 4 4 1 4 3 1 4 2 3 4
+ [5689] 4 3 4 3 3 3 4 4 2 4 4 2 1 1 2 4 4 3 3 4 3 3 3 3 4 2 3 2 3 4 1 3 3 2 2 2
+ [5725] 3 3 3 3 4 1 1 4 1 2 4 2 2 4 2 3 4 3 3 4 2 2 2 2 4 3 1 1 3 4 2 4 4 1 3 4
+ [5761] 2 2 4 4 2 2 3 1 3 1 1 3 3 4 2 2 4 3 3 2 4 1 4 3 3 4 3 3 3 2 2 2 3 4 1 4
+ [5797] 1 1 1 4 3 2 3 2 4 2 3 4 2 4 3 3 3 3 2 3 1 4 2 2 2 4 4 4 2 4 2 4 4 2 2 2
+ [5833] 4 4 2 4 4 4 1 4 3 4 2 4 2 4 3 3 2 2 2 3 3 4 4 4 3 2 1 2 3 2 4 4 4 1 4 2
+ [5869] 4 3 3 2 3 4 2 3 1 2 3 3 3 4 2 3 2 1 2 2 3 1 3 3 3 3 3 4 1 4 2 3 4 4 3 3
+ [5905] 3 4 2 2 2 4 1 3 4 4 3 2 3 3 3 4 2 4 4 3 2 4 4 2 4 4 4 3 2 2 4 4 3 1 1 1
+ [5941] 3 4 4 2 4 4 4 3 4 2 2 4 1 1 1 2 2 4 2 3 4 4 3 4 4 4 4 3 3 4 4 3 3 2 2 3
+ [5977] 4 3 3 4 1 2 2 4 2 2 4 3 4 3 4 2 2 4 2 3 4 2 4 4 4 3 4 3 4 3 3 3 2 2 4 3
+ [6013] 3 2 3 2 3 2 4 3 3 3 4 2 3 2 1 3 3 2 3 3 4 2 3 4 4 4 3 3 2 4 1 2 4 2 3 2
+ [6049] 4 2 2 3 4 2 3 3 1 4 2 3 3 3 3 3 3 4 3 3 1 3 1 2 4 3 1 4 4 2 3 4 3 3 3 3
+ [6085] 2 3 3 4 2 3 4 3 3 3 4 3 4 3 2 1 3 4 4 4 4 4 2 4 1 3 3 3 4 4 4 4 3 2 3 2
+ [6121] 4 4 3 2 3 2 2 2 4 1 2 3 1 4 1 4 1 1 1 4 3 2 4 4 2 3 2 4 2 3 4 2 3 2 2 4
+ [6157] 3 4 3 3 4 1 3 3 2 3 4 2 4 2 3 2 1 3 1 4 3 2 2 2 1 1 3 3 4 3 4 3 3 3 4 3
+ [6193] 4 4 2 4 4 3 3 4 1 4 2 2 4 3 1 4 4 4 4 4 2 4 4 3 3 2 3 4 4 3 2 4 3 2 4 4
+ [6229] 4 4 3 3 3 4 3 4 2 3 2 2 3 3 2 2 4 2 3 4 3 3 4 3 1 2 1 1 1 3 2 2 2 2 4 2
+ [6265] 2 1 4 4 2 1 3 1 1 1 3 3 4 4 2 3 3 4 3 3 3 1 4 3 1 4 3 4 3 3 2 4 1 2 3 4
+ [6301] 3 4 2 4 3 2 1 4 1 3 3 3 4 3 3 3 3 2 4 3 3 4 4 2 4 2 2 2 3 3 2 3 4 3 3 4
+ [6337] 3 3 1 4 4 2 3 3 3 4 4 3 4 3 4 4 2 3 1 3 3 2 4 2 2 3 2 3 3 4 2 4 2 3 3 2
+ [6373] 2 4 3 1 3 3 2 1 3 4 4 2 4 4 2 2 4 4 3 4 2 3 2 4 3 3 4 4 3 3 4 2 2 2 2 3
+ [6409] 2 4 1 2 3 3 2 3 4 4 4 3 3 3 4 2 4 4 3 2 1 3 3 4 3 3 2 4 4 2 4 2 3 2 3 3
+ [6445] 3 2 1 3 2 1 4 2 2 4 2 3 2 3 2 4 4 2 3 4 4 2 4 3 3 1 2 4 4 2 2 2 4 2 4 2
+ [6481] 2 2 3 2 3 2 3 2 4 3 3 3 3 4 3 2 2 2 4 4 2 2 1 3 2 3 4 3 4 4 2 4 4 4 2 3
+ [6517] 1 2 3 4 3 4 4 2 4 4 4 4 4 1 4 2 4 2 3 3 2 2 2 4 4 4 2 3 2 4 3 4 1 2 2 3
+ [6553] 3 2 4 4 2 2 3 3 4 4 4 3 3 4 2 4 2 3 2 2 2 4 3 2 3 4 3 2 4 3 2 4 4 3 4 4
+ [6589] 2 3 4 1 4 4 3 3 2 3 2 3 2 3 3 2 3 4 2 3 3 4 4 3 4 2 3 4 4 3 2 1 3 4 4 2
+ [6625] 4 4 3 3 3 2 4 1 4 3 4 2 4 3 3 3 3 4 2 4 2 3 3 3 3 3 3 2 4 4 4 3 3 3 4 3
+ [6661] 2 3 3 3 3 3 4 4 2 2 3 4 4 3 4 4 4 4 4 2 3 3 3 4 2 4 3 1 3 2 2 3 4 2 4 3
+ [6697] 3 1 4 2 3 3 2 4 3 4 3 2 4 4 4 3 4 4 2 4 4 2 3 3 3 3 4 2 3 4 2 2 1 4 2 4
+ [6733] 2 1 3 2 4 3 3 2 4 2 4 4 1 3 2 4 2 4 2 4 4 2 3 3 4 4 2 3 2 2 4 2 4 2 2 4
+ [6769] 2 2 4 3 4 2 3 3 4 4 4 4 3 3 2 4 2 4 4 3 2 3 2 4 3 3 3 3 4 1 3 4 2 4 2 3
+ [6805] 2 2 2 3 3 3 4 2 3 2 3 4 3 2 3 3 3 4 4 4 4 3 4 2 4 3 3 3 4 4 3 3 3 2 3 2
+ [6841] 3 3 3 3 3 2 4 4 3 3 4 4 4 3 3 3 2 4 2 2 2 3 3 1 2 3 1 3 3 2 4 4 3 4 2 3
+ [6877] 4 4 4 3 3 3 1 1 3 3 3 3 3 2 2 3 3 3 4 1 4 4 3 2 4 3 3 1 4 3 3 2 3 3 4 3
+ [6913] 2 4 4 3 4 4 2 3 4 4 2 4 3 2 2 4 3 4 3 3 2 3 2 2 2 3 3 1 2 4 3 2 3 3 3 2
+ [6949] 2 1 3 4 2 4 3 3 4 3 4 2 2 4 4 3 4 4 3 3 3 4 4 3 3 3 3 3 4 2 4 3 2 4 4 4
+ [6985] 2 2 2 4 2 3 4 4 4 4 4 4 2 4 4 3 4 4 3 2 2 3 2 2 4 4 3 2 3 3 2 3 4 3 4 2
+ [7021] 4 2 4 4 3 4 4 2 3 3 2 4 4 2 3 2 4 4 4 2 2 3 2 4 4 2 4 3 2 2 3 3 4 3 3 4
+ [7057] 4 2 2 3 2 2 2 2 4 3 3 2 2 4 4 3 4 4 4 3 3 3 2 4 3 3 2 2 3 3 2 3 2 3 4 3
+ [7093] 3 2 2 4 3 3 3 2 1 3 4 2 4 2 3 2 2 1 2 2 3 2 2 4 3 2 3 2 3 3 4 2 2 4 3 2
+ [7129] 2 3 4 1 4 1 1 2 4 2 4 3 2 2 3 4 4 2 4 4 4 2 3 3 3 4 2 3 4 3 2 4 3 3 3 3
+ [7165] 4 1 3 1 3 3 3 4 3 4 3 3 3 4 2 1 2 4 4 4 4 2 4 2 2 3 4 3 2 3 4 4 3 3 4 2
+ [7201] 4 3 2 2 4 4 1 4 3 3 2 3 3 4 4 4 4 3 3 3 3 3 2 3 3 3 3 3 3 3 4 4 2 3 3 3
+ [7237] 4 2 2 1 2 4 3 3 3 2 4 3 4 2 4 4 2 3 3 2 4 4 4 4 3 4 4 2 4 2 2 3 2 3 2 3
+ [7273] 4 3 3 2 2 2 4 4 2 4 3 3 4 4 2 4 4 4 3 3 3 2 2 2 3 4 3 3 3 2 2 3 3 3 4 2
+ [7309] 3 4 2 4 2 3 4 3 4 2 1 3 3 3 4 3 3 3 3 4 2 2 4 2 2 4 3 3 3 2 3 2 4 2 2 4
+ [7345] 4 4 1 3 3 2 3 2 1 3 4 4 4 3 3 4 2 4 4 2 2 3 3 2 4 2 3 4 4 4 2 4 3 3 3 2
+ [7381] 3 3 3 2 4 4 4 4 3 2 4 2 3 2 4 3 2 4 2 3 2 2 3 3 2 3 3 2 3 3 3 4 2 2 4 2
+ [7417] 2 4 4 3 3 4 2 4 4 3 4 4 2 2 3 3 2 1 1 3 2 2 1 2 2 3 1 4 4 2 2 2 2 3 4 2
+ [7453] 2 2 2 4 3 2 3 3 3 3 3 3 2 2 4 4 2 2 3 3 3 1 3 3 4 4 4 3 2 2 4 4 3 4 1 3
+ [7489] 3 2 2 2 3 3 4 4 3 2 2 2 2 2 3 2 4 4 1 3 4 4 4 2 4 4 3 4 3 3 2 1 2 3 4 3
+ [7525] 2 3 4 4 4 3 2 3 1 4 4 3 4 3 3 3 4 3 4 4 2 2 2 2 2 2 2 4 2 4 4 3 4 3 2 4
+ [7561] 4 2 3 4 3 3 2 3 2 3 4 4 4 4 4 4 2 3 1 3 4 2 3 4 4 2 3 3 3 3 3 3 3 3 4 4
+ [7597] 2 2 2 4 2 2 3 3 3 2 3 3 4 2 3 3 3 2 1 3 1 4 4 3 4 4 4 4 2 4 4 4 2 4 2 2
+ [7633] 4 4 2 4 2 4 4 3 4 2 3 4 3 4 3 4 3 4 2 4 4 2 4 1 2 3 2 4 4 3 2 2 3 4 4 2
+ [7669] 1 3 3 4 3 3 4 4 2 3 2 2 3 3 4 3 4 3 4 3 3 4 2 4 3 4 4 3 4 3 2 3 4 4 2 3
+ [7705] 3 3 4 4 2 2 3 2 4 4 4 4 4 4 2 2 3 2 4 2 2 2 3 3 3 4 4 3 3 4 2 2 2 4 4 3
+ [7741] 3 2 4 3 2 2 4 2 3 4 4 3 1 4 4 4 4 3 3 4 4 4 3 4 1 4 3 4 2 4 3 4 4 4 4 3
+ [7777] 2 3 3 3 4 3 3 2 3 3 2 4 2 2 1 3 3 2 4 4 2 2 2 3 3 4 2 2 2 2 4 3 3 2 2 3
+ [7813] 2 2 3 3 2 3 3 3 3 3 4 3 4 4 3 4 2 3 3 2 3 3 4 2 2 3 4 2 2 2 4 3 3 3 4 3
+ [7849] 4 3 3 3 2 4 4 4 2 2 4 4 2 3 4 3 2 2 3 3 4 3 3 3 4 3 2 3 1 2 4 3 3 3 2 3
+ [7885] 3 4 3 3 3 3 4 2 3 2 4 2 4 2 2 3 3 4 4 4 3 3 3 3 2 4 4 2 3 3 1 2 2 3 1 2
+ [7921] 2 4 3 3 4 3 1 4 4 2 3 4 3 3 3 4 2 4 2 4 3 3 2 2 3 3 3 2 2 3 3 3 3 3 3 3
+ [7957] 2 4 4 4 3 2 3 2 3 2 3 2 4 4 3 2 2 4 3 3 2 2 3 2 4 3 4 3 4 2 3 2 2 4 2 2
+ [7993] 4 3 2 2 3 3 3 4 3 2 4 4 2 3 2 3 2 2 2 3 3 2 4 4 2 3 3 4 3 3 4 3 2 4 2 2
+ [8029] 3 4 4 3 3 2 3 2 3 4 3 4 2 4 4 1 1 3 3 4 3 3 3 1 1 4 2 4 2 2 2 4 3 4 4 2
+ [8065] 2 2 2 3 2 2 2 3 3 3 4 4 2 1 4 1 2 2 3 2 2 3 2 4 4 4 3 4 4 3 3 2 4 3 4 2
+ [8101] 3 2 4 4 4 4 3 2 2 2 3 4 4 4 4 2 3 3 3 3 4 3 2 3 3 4 3 3 3 4 3 3 4 2 3 3
+ [8137] 3 3 2 3 2 3 3 4 3 3 4 3 3 3 4 4 4 3 3 3 3 2 3 4 3 3 3 2 2 4 3 3 4 3 4 4
+ [8173] 3 2 2 3 4 4 4 3 4 2 2 3 2 4 3 3 3 3 2 3 3 4 4 4 3 3 4 4 3 3 3 4 2 2 2 4
+ [8209] 4 4 3 2 3 4 3 4 2 4 4 3 3 2 4 3 3 1 3 2 2 3 2 3 3 2 4 4 2 3 4 4 3 3 4 2
+ [8245] 3 4 4 2 3 2 2 4 1 3 2 4 4 3 3 3 4 3 2 4 4 2 3 4 4 2 4 3 3 3 4 2 4 1 3 4
+ [8281] 4 2 4 4 2 4 3 2 3 4 2 2 4 4 4 4 4 2 3 2 2 3 3 4 3 3 2 3 3 4 2 4 2 3 3 3
+ [8317] 3 4 4 3 3 2 3 4 2 3 4 3 2 3 3 4 4 4 4 4 3 3 4 4 4 3 3 2 3 2 3 3 4 3 3 2
+ [8353] 2 3 2 4 4 3 4 4 2 2 4 4 4 4 4 2 2 2 4 3 3 4 3 2 3 4 3 2 3 3 4 2 2 3 4 2
+ [8389] 3 3 3 4 4 3 4 4 3 1 3 2 4 4 3 3 3 2 4 4 3 4 4 2 3 4 2 2 3 2 2 2 4 3 4 2
+ [8425] 4 3 4 3 2 1 4 3 4 2 2 4 3 3 2 3 4 3 4 3 3 2 2 3 2 3 4 2 4 2 4 4 2 4 4 3
+ [8461] 3 2 3 2 2 3 3 2 2 3 2 2 2 4 3 3 3 2 3 4 3 3 2 3 3 4 2 2 3 4 4 2 3 3 2 3
+ [8497] 2 4 3 3 2 4 4 4 3 3 3 2 3 2 3 3 3 2 3 4 3 2 2 2 4 3 4 3 3 3 3 2 3 4 2 4
+ [8533] 3 3 4 1 4 4 4 2 3 2 2 3 2 3 3 4 3 3 4 4 4 3 3 2 1 3 3 3 3 4 4 3 4 2 4 3
+ [8569] 3 3 3 3 2 3 4 2 2 3 3 3 4 2 3 3 4 4 4 2 3 2 2 3 4 2 3 3 3 3 3 3 2 2 3 2
+ [8605] 4 2 4 3 2 2 3 3 3 2 4 4 3 3 3 2 3 4 2 3 2 2 2 3 4 3 3 4 3 3 4 1 3 2 3 2
+ [8641] 3 3 3 3 3 4 3 4 2 3 1 3 4 3 3 3 3 3 3 3 3 3 2 4 3 3 4 3 2 2 2 2 3 2 3 4
+ [8677] 3 4 3 2 2 4 3 3 3 3 2 2 4 2 4 3 3 2 2 3 3 2 3 2 4 2 3 4 3 4 4 3 3 3 2 4
+ [8713] 2 2 3 3 3 4 2 2 3 1 3 4 2 4 4 2 2 3 3 4 4 4 4 4 3 3 3 3 3 4 2 2 3 3 3 2
+ [8749] 3 2 4 3 4 3 2 3 2 3 4 2 3 2 4 2 4 4 3 2 3 3 2 3 2 4 2 3 2 3 2 3 2 3 4 3
+ [8785] 2 3 3 4 4 4 4 3 4 3 3 2 2 3 4 3 3 2 4 3 3 3 3 3 3 2 2 2 3 3 4 3 2 3 3 2
+ [8821] 4 3 3 3 4 2 2 4 3 2 2 4 3 3 2 3 3 2 2 2 4 4 3 4 3 3 2 4 2 4 4 3 4 4 2 4
+ [8857] 3 2 2 3 2 3 2 2 3 4 4 4 2 2 4 4 3 2 3 4 3 4 2 3 4 2 3 3 3 3 2 2 2 2 4 2
+ [8893] 3 4 2 3 4 3 2 3 2 2 2 3 2 2 4 4 4 4 3 3 3 3 3 3 3 2 3 1 3 3 4 3 3 4 4 3
+ [8929] 4 4 2 2 3 3 3 4 2 3 3 4 3 4 3 4 2 3 4 2 4 4 3 2 3 3 2 2 3 3 3 4 3 3 2 3
+ [8965] 2 3 3 2 3 3 2 4 3 2 4 4 2 2 2 3 3 4 3 3 2 3 2 2 3 3 3 2 2 2 2 1 4 3 4 2
+ [9001] 3 4 2 2 2 3 3 3 4 3 2 2 3 3 2 3 3 3 3 3 2 4 3 3 3 4 3 2 2 2 4 2 2 2 3 4
+ [9037] 4 3 3 3 4 2 3 4 4 3 2 3 4 1 3 4 2 1 4 3 3 3 2 3 4 2 3 4 4 3 3 4 4 3 4 3
+ [9073] 2 4 2 3 2 3 2 4 2 3 3 3 2 4 4 3 2 3 4 3 2 2 3 4 4 4 4 3 4 3 3 3 2 4 2 3
+ [9109] 3 2 3 2 4 2 3 4 3 3 2 4 2 4 2 2 2 2 4 3 4 4 4 3 3 2 2 2 3 2 4 2 3 2 3 4
+ [9145] 3 3 4 2 3 2 3 3 3 3 3 4 3 2 3 2 2 4 2 3 4 3 3 3 4 4 3 4 2 2 4 3 4 2 3 2
+ [9181] 3 2 4 3 2 2 3 3 3 2 3 3 2 3 2 3 3 2 3 4 3 3 2 3 4 3 3 3 3 2 4 3 3 3 4 4
+ [9217] 2 3 2 3 3 2 4 4 4 2 2 3 4 2 3 2 3 4 3 4 4 3 4 2 2 2 3 4 3 3 2 3 3 2 3 3
+ [9253] 2 3 4 4 2 2 4 2 2 4 4 4 2 2 3 3 2 2 2 4 2 2 3 2 3 3 2 2 2 4 2 2 3 4 2 4
+ [9289] 3 4 2 2 2 2 2 2 3 4 3 2 2 3 2 3 2 2 4 2 3 2 3 3 2 3 4 4 3 4 2 3 2 2 2 2
+ [9325] 3 2 2 3 4 3 3 3 2 2 3 2 2 2 2 4 2 2 2 2 3 2 4 3 2 2 4 2 3 4 2 2 2 4 4 3
+ [9361] 4 4 2 2 3 3 3 3 2 3 4 3 3 4 2 3 4 4 3 2 3 2 2 3 3 2 2 4 2 2 4 3 4 2 2 4
+ [9397] 2 2 3 2 3 2 3 2 3 4 2 3 2 2 4 3 2 3 4 4 3 4 3 4 2 2 4 2 2 2 4 4 4 4 4 2
+ [9433] 3 2 2 3 3 2 3 3 3 3 3 2 4 2 4 3 3 4 3 3 4 2 2 4 3 4 4 4 3 3 2 3 4 2 2 2
+ [9469] 4 4 4 3 4 4 3 4 2 2 3 2 2 3 2 2 4 3 4 3 2 4 3 3 2 4 4 3 2 2 4 2 3 4 2 4
+ [9505] 2 3 2 2 2 2 3 3 2 2 3 2 2 2 2 2 2 4 3 2 4 3 2 2 2 3 4 2 3 3 4 2 4 4 2 3
+ [9541] 4 3 2 4 4 3 2 3 4 4 3 3 4 2 3 3 2 3 3 4 2 2 2 2 4 2 3 4 3 4 3 3 4 4 3 4
+ [9577] 4 2 3 2 2 2 2 2 2 3 4 2 3 2 2 2 2 3 2 4 2 3 2 4 4 4 2 3 4 3 2 2 2 3 2 2
+ [9613] 4 2 3 2 3 4 3 4 2 3 3 3 3 3 3 3 2 3 3 4 2 3 4 2 2 2 3 4 2 3 1 2 2 2 3 3
+ [9649] 3 2 4 2 3 2 4 4 4 3 3 4 3 3 2 3 3 3 4 3 2 3 2 2 2 2 4 2 2 3 3 4 4 4 2 4
+ [9685] 3 3 1 4 2 2 2 2 2 2 2 2 4 2 2 2 3 4 3 4 2 3 2 3 3 3 3 3 2 2 4 2 2 4 2 4
+ [9721] 2 3 3 4 3 2 2 2 3 3 4 4 2 3 2 4 2 2 3 3 2 2 3 2 2 2 3 2 3 2 4 2 4 3 4 2
+ [9757] 2 3 4 2 3 2 4 2 2 2 2 2 2 3 3 2 2 4 2 2 2 3 2 2 4 2 3 3 2 2 2 3 3 2 2 2
+ [9793] 2 2 4 2 2 3 2 3 4 3 4 2 4 2 2 4 2 3 2 4 4 4 2 2 2 4 4 4 4 4 2 3 2 3 3 4
+ [9829] 3 2 2 2 2 2 3 2 2 3 2 4 4 4 3 2 2 2 2 4 2 3 2 2 2 3 4 4 2 4 4 2 2 2 3 2
+ [9865] 4 3 2 4 2 4 2 2 2 4 3 3 2 4 2 2 2 3 2 2 3 4 3 2 2 2 2 3 3 2 2 2 2 4 3 2
+ [9901] 2 3 3 2 2 4 2 2 2 2 2 4 2 2 3 2 3 2 2 2 2 4 4 2 2 2 2 2 2 2 2 4 2 4 2 2
+ [9937] 2 3 2 2 2 2 2 2 2 2 4 4 3 3 2 2 2 4 2 4 2 2 4 2 2 4 3 3 3 3 2 4 3 2 2 2
+ [9973] 2 2 3 2 2 4 2 3 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 3 2 2 2 2
+
+Within cluster sum of squares by cluster:
+[1] 16442.67 40315.05 20198.28 13630.04
+ (between_SS / total_SS =  24.5 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+[6] "betweenss"    "size"         "iter"         "ifault"      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fviz_cluster</span>(km, numerics_norm) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/con_4_grupos-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>    km<span class="sc">$</span>size</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  596 2365 3773 3266</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">withinss=</span>km<span class="sc">$</span>withinss, <span class="at">size=</span>km<span class="sc">$</span>size) </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(m, <span class="fu">aes</span>(size,withinss))<span class="sc">+</span> </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()<span class="sc">+</span> </span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)<span class="sc">+</span> </span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"cardinalidad (size)"</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span><span class="st">"magnitud (whithinss)"</span>)<span class="sc">+</span> </span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text_repel</span>(<span class="at">label=</span><span class="fu">rownames</span>(m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/con_4_grupos-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">kcca</span>(numerics_norm,<span class="dv">4</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    importance <span class="ot">&lt;-</span> <span class="fu">FeatureImpCluster</span>(res, <span class="fu">as.data.table</span>(numerics_norm))</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(importance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">barplot</span>(res, <span class="at">bycluster=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HDT2_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 </section>
 
