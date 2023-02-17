@@ -170,12 +170,9 @@ distancia <- dist(numerics_norm)
 
 ```{r hcluster}
     hc <- hclust(distancia, method ="complete")
-```
-
-### Resumen de kmedias
-
-```{r hcluster}
-    plot(hc)
+    groups <- cutree(hc, k = 4)
+    cluster_list <- list(data=distancia, cluster =groups)
+    fviz_cluster(cluster_list, geom = "point")
 ```
 
 # Test de calidad clustering jerarquico
