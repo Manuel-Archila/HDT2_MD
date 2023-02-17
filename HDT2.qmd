@@ -1,0 +1,45 @@
+---
+title: "HDT2_MD"
+format: html
+editor: visual
+---
+
+```{r}
+library(dplyr)
+library(hopkins)
+library(ggplot2)
+library(ggrepel)
+library(factoextra)
+library(cluster)
+library(flexclust)
+library(FeatureImpCluster)
+```
+
+# Clustering - Movies
+
+## 1. Preprocesamiento
+
+### Descripción de las variables
+
+```{r}
+movies <- read.csv("movies.csv")
+summary(movies)
+
+set.seed(123)
+movies$castMenAmount <- as.numeric(movies$castMenAmount)
+movies$castMenAmount <- ifelse(is.na(movies$castMenAmount), 0, as.numeric(movies$castMenAmount))
+movies$castWomenAmount <- as.numeric(movies$castWomenAmount)
+movies$castWomenAmount <- ifelse(is.na(movies$castWomenAmount), 0, as.numeric(movies$castWomenAmount))
+
+numerics <- movies[,c("budget", "revenue", "runtime","popularity", "voteAvg", "voteCount", "genresAmount", "productionCoAmount",  "productionCountriesAmount", "actorsAmount", "castWomenAmount", "castMenAmount")]
+numerics_norm <- mutate_if(numerics, is.numeric, scale)
+```
+
+### Determinar si vale la pena agrupar
+
+```{r hopkins}
+
+h <- hopkins(numerics_norm)
+distancia <- dist(numerics_norm)
+
+```
