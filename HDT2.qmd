@@ -37,9 +37,10 @@ numerics_norm <- mutate_if(numerics, is.numeric, scale)
 
 ### Determinar si vale la pena agrupar
 
+fviz_cluster(list(data = numerics_norm), cluster = kmen)
+
 ```{r hopkins}
 
 h <- hopkins(numerics_norm)
 distancia <- dist(numerics_norm)
-
 ```
