@@ -129,15 +129,6 @@ Dado qué el agrupamiento sugerido contiene 1 grupo con el 99.98% de los datos y
 
 # Test de calidad kmeans
 
-```{r AQUI}
-    ggplot(m, aes(size,withinss))+ 
-    geom_point()+ 
-    geom_smooth(method="lm")+ 
-    labs(x="cardinalidad (size)",
-        y="magnitud (whithinss)")+ 
-    geom_text_repel(label=rownames(m))
-```
-
 ## Calidad por el método de la silueta jerarquico
 
 ```{r test de calidad}
