@@ -235,6 +235,8 @@ prop.table(table(grupo2$paises_principal))*100
 prop.table(table(grupo2$director_principal))*100
 prop.table(table(grupo2$actor_principal))*100
 prop.table(table(grupo2$genresAmount))*100
+
+summary(grupo2$revenue)
 ```
 
 ### Caracteristicas del grupo 2
@@ -255,10 +257,18 @@ prop.table(table(grupo2$genresAmount))*100
 
 El grupo 1 contiene en su mayoria peliculas tradicionales Estadounidenses, dado que el idioma más recurrente es el ingles, la región de producción es EEUU y el genero principal es Acción
 
-Grupo 1 = Peliculas tradicionales de Hollywood
+Grupo 1 = Peliculas tradicionales Americanas
 
 El grupo 2 tiene mayor diversisdad con respecto a generos, region de producción e idioma.
 
 Grupo 2 = Peliculas de estudios independientes
 
 ## Trabajo a seguir
+
+¿Estados Unidos predomina en la data porque una gran cantidad de productoras reconocidas se encuetran en el país?
+
+Más de la mitad de los datos en el grupo 2 obtuvieron 0 ingresos ¿Esto se debe a que no se habían lazando las peliculas o es porque no tuvieron exito?
+
+¿La cantidad de generos en una pelicula es inversamente proporcional a su exito?
+
+¿El país donde se produce la pelicula afecta en la aceptación de la audiencia?
