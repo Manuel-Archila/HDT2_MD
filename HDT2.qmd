@@ -43,7 +43,7 @@ library(FeatureImpCluster)
 
 ## 1. Preprocesamiento
 
-En el preprocesamiento de la data eliminamos todas las variables cualitativas de nuestro set de datos. Además casteamos todas aquellas variables que eran cuantitavias pero estaban guardadas en formato de texto. Por ultimo para las varaibles de "castMenAmount" y "CastWomanAmount" como estas varaibles eran cuantitavas, pero en formato de texto, generaron NA los cuales fueron remplazados por 0; ya que consediramos pertinente tomar en cuenta las peliculas que no contienen un genero de actores para nusetro análisis.
+En el preprocesamiento de la data eliminamos todas las variables cualitativas de nuestro set de datos. Además casteamos todas aquellas variables que eran cuantitavias pero estaban guardadas en formato de texto. Por ultimo para las varaibles de "castMenAmount" y "CastWomanAmount" como estas varaibles eran cuantitavas, pero en formato de texto, generaron NA los cuales fueron remplazados por 0; ya que consediramos pertinente tomar en cuenta las peliculas que no contienen un genero de actores para nusetro análisis. Los campos que no se utilizaran serán los promedios ya que sesgarían el analisis, además no utilizamos video y homepage porque estas variables solo se podrían utilizar como si tiene o no tiene.
 
 ### Descripción de las variables
 
@@ -71,7 +71,7 @@ h <- hopkins(numerics_norm)
 h
 ```
 
-El cofifiente de Hopkins fue de `{r round(h, 2)}`, al ser igual a 1 nos indica que el set datos tiene una estructura adecuada para la agrupación. \## Utilizando VAT
+El cohefiente de Hopkins fue de `{r round(h, 2)}`, al ser igual a 1 nos indica que el set datos tiene una estructura adecuada para la agrupación. \## Utilizando VAT
 
 ```{r vat}
 
@@ -90,7 +90,7 @@ distancia <- dist(numerics_norm)
     #}
     #plot(1:10, wss, type="b", xlab="cantidad de grupos", ylab="wss")
 
-    #fviz_nbclust(numerics_norm, kmeans, method="wss")
+    fviz_nbclust(numerics_norm, kmeans, method="wss")
 ```
 
 ## Método de la silueta
@@ -98,6 +98,8 @@ distancia <- dist(numerics_norm)
 ```{r silueta}
     fviz_nbclust(numerics_norm, kmeans, method="silhouette")
 ```
+
+Después de utlizar el metodo de la silueta y el metodo WSS concluimos que la mejor agrupación sería con 2 grupos
 
 ## Clustering
 
@@ -207,7 +209,7 @@ prop.table(table(grupo1$paises_principal))*100
 prop.table(table(grupo1$director_principal))*100
 prop.table(table(grupo1$actor_principal))*100
 prop.table(table(grupo1$genresAmount))*100
-
+summary(grupo2$revenue)
 
 
 ```
@@ -235,7 +237,6 @@ prop.table(table(grupo2$paises_principal))*100
 prop.table(table(grupo2$director_principal))*100
 prop.table(table(grupo2$actor_principal))*100
 prop.table(table(grupo2$genresAmount))*100
-
 summary(grupo2$revenue)
 ```
 
