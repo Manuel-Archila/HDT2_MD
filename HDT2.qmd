@@ -188,6 +188,9 @@ movies$director_principal <- sapply(movies$director_separados, `[`, 1)
 movies$actor_separados <- strsplit(movies$actors, "\\|")
 movies$actor_principal <- sapply(movies$actor_separados, `[`, 1)
 
+movies$compañia_separados <- strsplit(movies$productionCompany, "\\|")
+movies$compañia_principal <- sapply(movies$compañia_separados, `[`, 1)
+
 movies$grupo <- km$cluster
 grupo1 <- movies[movies$grupo==1,]
 grupo2 <- movies[movies$grupo==2,]
@@ -202,18 +205,60 @@ prop.table(table(grupo1$originalLanguage))*100
 prop.table(table(grupo1$genero_principal))*100
 prop.table(table(grupo1$paises_principal))*100
 prop.table(table(grupo1$director_principal))*100
-
-summary(grupo1$runtime)
-summary(grupo2$runtime)
-
-
-prop.table(table(grupo1$runtime))*100
-prop.table(table(grupo1$popularity))*100
-prop.table(table(grupo1$voteCount))*100
+prop.table(table(grupo1$actor_principal))*100
 prop.table(table(grupo1$genresAmount))*100
-prop.table(table(grupo1$productionCoAmount))*100
-prop.table(table(grupo1$productionCountriesAmount))*100
-prop.table(table(grupo1$castWomenAmount))*100
-prop.table(table(grupo1$castMenAmount))*100
+
+
 
 ```
+
+### Caracteristicas del grupo 1
+
+-   El idioma predominante es el ingles con un 97.7%
+
+-   El genero mas frecuente es el de Acción con un 29.8%
+
+-   No es posbile concluir nada del campo de director
+
+-   El país que produjo más peliculas fue E.E.U.U 68.75%
+
+-   La cantidad de generos que predomina es de 3 generos con un 46.14%
+
+-   No hay un actor determinante
+
+## Grupo 2
+
+```{r}
+prop.table(table(grupo2$originalLanguage))*100
+prop.table(table(grupo2$genero_principal))*100
+prop.table(table(grupo2$paises_principal))*100
+prop.table(table(grupo2$director_principal))*100
+prop.table(table(grupo2$actor_principal))*100
+prop.table(table(grupo2$genresAmount))*100
+```
+
+### Caracteristicas del grupo 2
+
+-   El idioma predominante es el ingles con un 76.1%. Hay bastante variedad.
+
+-   El genero mas frecuente es el de Drama con un 18.7%
+
+-   No es posbile concluir nada del campo de director
+
+-   El país que produjo más peliculas fue E.E.U.U con un 51.8%. Hay mucha variedad.
+
+-   La cantidad de generos que predomina es de 3 generos con un 30.9% pero hay películas con hasta 16 géneros.
+
+-   No hay un actor determinante
+
+## Conclusiones
+
+El grupo 1 contiene en su mayoria peliculas tradicionales Estadounidenses, dado que el idioma más recurrente es el ingles, la región de producción es EEUU y el genero principal es Acción
+
+Grupo 1 = Peliculas tradicionales de Hollywood
+
+El grupo 2 tiene mayor diversisdad con respecto a generos, region de producción e idioma.
+
+Grupo 2 = Peliculas de estudios independientes
+
+## Trabajo a seguir
